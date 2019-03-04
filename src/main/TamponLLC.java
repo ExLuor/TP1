@@ -14,7 +14,6 @@ public class TamponLLC {
 
         @Override
         public int compareTo(TamponFormat t) {
-            // TODO: Vérifier si c'est un ordre croissant
             if (this.trame == null && t.trame == null)
                 return 0;
             if (this.trame == null)

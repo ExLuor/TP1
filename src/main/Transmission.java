@@ -22,7 +22,6 @@ public class Transmission implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		if (tampon.isEmpty()) {
 			return;
 		}
