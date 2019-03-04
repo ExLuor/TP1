@@ -9,49 +9,52 @@ public class TamponCirculaire {
     }
 
     private CirculaireFormat tampon[];
-    private int head;
-    private int tail;
+    private int front;
+    private int rear;
+    private int nbElems;
 
     public TamponCirculaire(int size) {
         tampon = new CirculaireFormat[size];
         for (int i = 0; i < size; i++) {
             tampon[i] = new CirculaireFormat();
         }
-        head = 0;
-        tail = 0;
+        front = 0;
+        rear = 0;
+        nbElems = 0;
     }
 
     public boolean add(Trame value) {
         if (!isFull()) {
-            tampon[tail].trame = value;
-            tampon[tail].timeAdded = System.currentTimeMillis();
-            head = (head + 1) % tampon.length;
+            nbElems++;
+            rear = (rear + 1) % tampon.length;
+            tampon[rear].trame = value;
+            tampon[rear].timeAdded = System.currentTimeMillis();
             return true;
         }
         return false;
     }
 
     public Trame poll() {
-        if (head != tail) {
-            Trame value = tampon[head].trame;
-            head = (head + 1) % tampon.length;
-            return value;
+        if (!isEmpty()) {
+            nbElems--;
+            front = (front + 1) % tampon.length;
+            return tampon[front].trame;
         }
         return null;
     }
 
     public long getLastAddedTime() {
-        if (head != tail) {
-            return tampon[head].timeAdded;
+        if (!isEmpty()) {
+            return tampon[front].timeAdded;
         }
         return 0;
     }
 
     public boolean isFull() {
-        return (tail + 1) % tampon.length == head;
+        return nbElems == tampon.length;
     }
 
     public boolean isEmpty() {
-        return tail == head;
+        return nbElems == 0;
     }
 }
