@@ -3,12 +3,13 @@ package main;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public abstract class SousCouche<T1, T2> implements Runnable {
-	protected String nomCouche;
-	protected Queue<T1> bufferFromUp = new ConcurrentLinkedQueue<T1>();
-	protected Queue<T2> bufferFromDown = new ConcurrentLinkedQueue<T2>();
-	private SousCouche<?, T1> coucheUp;
-	private SousCouche<T2, ?> coucheDown;
+public abstract class SousCouche<T1, T2> implements Runnable
+{
+    protected String nomCouche;
+    protected Queue<T1> bufferFromUp = new ConcurrentLinkedQueue<T1>();
+    protected Queue<T2> bufferFromDown = new ConcurrentLinkedQueue<T2>();
+    private SousCouche<?, T1> coucheUp;
+    private SousCouche<T2, ?> coucheDown;
 
     // A2 envoie des données à A1
     protected boolean sendToUp(T1 data)
@@ -65,7 +66,6 @@ public abstract class SousCouche<T1, T2> implements Runnable {
 
     protected abstract void sendMessageToDown();
 
-    // @Override
     public void run()
     {
         // Pour allonger le délais s'il ne se passe rien.

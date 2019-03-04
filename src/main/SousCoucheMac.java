@@ -53,6 +53,7 @@ public class SousCoucheMac extends SousCouche<Octet, Trame>
         Trame t = new Trame();        
         t.setDonnees(o);
         t.setNumTrame(nextNumeroTrame);
+        t.setType(Trame.Type.Data);
         nextNumeroTrame++;
         return t;
     }

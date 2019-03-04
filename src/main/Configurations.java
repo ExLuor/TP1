@@ -27,23 +27,18 @@ public class Configurations
     public static HashMap<String, String> getConfigs(String leFichier)
     {
         nomFichierConfig = leFichier;
-
         if (!isInitialized)
         {
 
             buildConfigs();
         }
-
         return configs;
-
     }
 
     private static void buildConfigs()
     {
-
         try
         {
-
             FileReader fr = new FileReader(nomFichierConfig);
             BufferedReader br = new BufferedReader(fr);
             String line = new String();
@@ -85,14 +80,12 @@ public class Configurations
 
     private static void getThisConfig(BufferedReader br, String conf)
     {
-
         String line = new String();
         String[] wordsArray;
         try
         {
             while (true)
             {
-
                 line = br.readLine();
                 // Séparer la lecture à la tabulation.
                 wordsArray = line.split("\t");
@@ -113,8 +106,8 @@ public class Configurations
             ex.printStackTrace();
         }
     }
-
 }
+
 /*
  * 
  * 
