@@ -22,7 +22,11 @@ public class Trame
 
     public Trame()
     {
-        octData = null;
+        octData = new Octet[6];
+        for (int i = 0 ; i < octData.length;i++)
+        {
+            octData[i] = new Octet();
+        }
     }
 
     public Trame(Octet[] o)
@@ -47,6 +51,16 @@ public class Trame
     public Octet getOctet(int position)
     {
         return octData[position];
+    }
+    
+    public Octet getDonnees()
+    {
+        return this.octData[4];
+    }
+    
+    public void setDonnees(Octet o)
+    {
+        this.octData[4] = o;
     }
 
     @Override
@@ -87,7 +101,11 @@ public class Trame
     public int getNumTrame()
     {
         return Byte.toUnsignedInt(octData[3].value);
+    }
 
+    public void setNumTrame(int numTrame)
+    {
+        octData[3] = new Octet((byte) numTrame);
     }
 
     public int getNumTrameHamming()

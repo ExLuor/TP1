@@ -50,13 +50,19 @@ public class SousCoucheMac extends SousCouche<Octet, Trame>
      */
     private Trame OctetToTrame(Octet o)
     {
-        Octet[] octData = new Octet[2];
+//        Octet[] octData = new Octet[2];
+
+        Trame t = new Trame();
+        
+        t.setDonnees(o);
+        t.setNumTrame(nextNumeroTrame);
         // Le numéro de cette trame.
-        octData[0] = new Octet(nextNumeroTrame);
+//        octData[0] = new Octet(nextNumeroTrame);
         nextNumeroTrame++;
         // L'octet des données.
-        octData[1] = o;
-        return new Trame(octData);
+//        octData[1] = o;
+//        return new Trame(octData);
+        return t;
     }
 
     /*
