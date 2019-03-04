@@ -22,7 +22,6 @@ public class TP1Main {
 		String pathEcriture = config.get("PathEcriture");
 		String pathErreurs = "FichiersTxt/ErreursTransmission.txt";
 		
-		// TODO changer le délai pour lui du fichier
 		Transmission transmission = new Transmission(tailleTamponC, "Support de transmission");
 
 		Station stationA = new Station(pathLecture, "", transmission, "A", delai, taileTamponLLC, hamming);

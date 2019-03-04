@@ -22,7 +22,6 @@ public class Transmission implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		if (tampon.isEmpty()) {
 			return;
 		}
@@ -47,7 +46,7 @@ public class Transmission implements Runnable {
 	public boolean addTrame(Trame trame) {
 		if (tampon.add(trame)) {
 			System.out.println(
-			        "La couche " + nomCouche + " a ajouté la trame" + trame.getNumTrameHamming() + " à son tampon.");
+			        "La couche " + nomCouche + " a ajouté la trame " + trame.getNumTrameHamming() + " à son tampon.");
 			return true;
 		}
 		return false;
@@ -65,7 +64,7 @@ public class Transmission implements Runnable {
 			return;
 		}
 		dest.addFromDown(t);
-		System.out.println("La couche " + nomCouche + " a envoyé la trame" + t.getNumTrameHamming() + " à la station "
+		System.out.println("La couche " + nomCouche + " a envoyé la trame " + t.getNumTrameHamming() + " à la station "
 		        + numDest + ".");
 	}
 }

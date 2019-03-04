@@ -171,6 +171,8 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
             Trame trameOut = LLC_Out.getNextTrame();
             if (transmission.addTrame(trameOut)) {
                 LLC_Out.sendTrame(trameOut);
+                System.out.println("La station " + nomCouche + " envoie la trame " + trameOut.getNumTrameHamming()
+                        + " au support de transmission.");
             }
         }
 
