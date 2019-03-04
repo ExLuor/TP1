@@ -23,7 +23,7 @@ public class Trame
     public Trame()
     {
         octData = new Octet[6];
-        for (int i = 0 ; i < octData.length;i++)
+        for (int i = 0; i < octData.length; i++)
         {
             octData[i] = new Octet();
         }
@@ -52,63 +52,11 @@ public class Trame
     {
         return octData[position];
     }
-    
-    public Octet getDonnees()
-    {
-        return this.octData[4];
-    }
-    
-    public void setDonnees(Octet o)
-    {
-        this.octData[4] = o;
-    }
 
-    @Override
-    public boolean equals(Object obj)
-    {
-        Trame t = (Trame) obj;
-        // Si la trame reçue est vide.
-        if (t.octData == null)
-        {
-            return false;
-        }
-        else if (octData.length != t.octData.length)
-        {
-            return false;
-        }
-        for (int i = 0; i < octData.length; i++)
-        {
-            if (!octData[i].equals(t.octData[i]))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public String toString()
-    {
-        String s = new String();
-
-        for (Octet o : octData)
-        {
-            s += o.toString();
-        }
-        return s;
-    }
-
-    public int getNumTrame()
-    {
-        return Byte.toUnsignedInt(octData[3].value);
-    }
-
-    public void setNumTrame(int numTrame)
-    {
-        octData[3] = new Octet((byte) numTrame);
-    }
-
-    public int getNumTrameHamming()
+    /*
+     * GET/SET DU BYTE DE DESTINATAIRE.
+     */
+    public int getDestHamming()
     {
         // Crée un clone.
         Trame tAvecHamming = new Trame(this);
@@ -118,8 +66,38 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(octData[3].value);
+        return Byte.toUnsignedInt(octData[0].value);
     }
+
+    public void setDest(int dest)
+    {
+        byte b = (byte) dest;
+        octData[0] = new Octet(b);
+    }
+
+    /* GET/SET DU BYTE DE L'EXPÉDITEUR. */
+    public int getSenderHamming()
+    {
+        // Crée un clone.
+        Trame tAvecHamming = new Trame(this);
+        Trame tSansHamming = retireHamming(tAvecHamming);
+        // Le temps que Hamming soit mis en place.
+        if (tSansHamming == null)
+        {
+            return -1;
+        }
+        return Byte.toUnsignedInt(octData[1].value);
+    }
+
+    public void setSender(int sender)
+    {
+        byte b = (byte) sender;
+        octData[1] = new Octet(b);
+    }
+
+    /*
+     * GET/SET DU TYPE DE LA TRAME.
+     */
 
     public Type getType()
     {
@@ -161,7 +139,20 @@ public class Trame
         }
     }
 
-    public int getDestHamming()
+    /*
+     * GET/SET DU BYTE NUMERO DE TRAME.
+     */
+    public int getNumTrame()
+    {
+        return Byte.toUnsignedInt(octData[3].value);
+    }
+
+    public void setNumTrame(int numTrame)
+    {
+        octData[3] = new Octet((byte) numTrame);
+    }
+
+    public int getNumTrameHamming()
     {
         // Crée un clone.
         Trame tAvecHamming = new Trame(this);
@@ -171,32 +162,55 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(octData[0].value);
+        return Byte.toUnsignedInt(octData[3].value);
     }
 
-    public void setDest(int dest)
+    /*
+     * GET/SET DU BYTE DONNÉES.
+     */
+    public Octet getDonnees()
     {
-        byte b = (byte) dest;
-        octData[0] = new Octet(b);
+        return this.octData[4];
     }
 
-    public int getSenderHamming()
+    public void setDonnees(Octet o)
     {
-        // Crée un clone.
-        Trame tAvecHamming = new Trame(this);
-        Trame tSansHamming = retireHamming(tAvecHamming);
-        // Le temps que Hamming soit mis en place.
-        if (tSansHamming == null)
+        this.octData[4] = o;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        Trame t = (Trame) obj;
+        // Si la trame reçue est vide.
+        if (t.octData == null)
         {
-            return -1;
+            return false;
         }
-        return Byte.toUnsignedInt(octData[1].value);
+        else if (octData.length != t.octData.length)
+        {
+            return false;
+        }
+        for (int i = 0; i < octData.length; i++)
+        {
+            if (!octData[i].equals(t.octData[i]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public void setSender(int sender)
+    @Override
+    public String toString()
     {
-        byte b = (byte) sender;
-        octData[1] = new Octet(b);
+        String s = new String();
+
+        for (Octet o : octData)
+        {
+            s += o.toString();
+        }
+        return s;
     }
 
     public static Trame ajouteHamming(Trame t)
