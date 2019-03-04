@@ -1,0 +1,48 @@
+Taille du tampon "T-C" du "Thread C" en trames.
+[TAMPON_C]
+TailleTamponC	8
+[/TAMPON_C]
+
+Taille des tampons "T-LLC" de chaque côté du "Thread C" en trames.
+[TAMPON_LLC]
+TailleTamponLLC	8
+[/TAMPON_LLC]
+
+Délais de temporisation ("time-out").
+[DELAI]
+delais0	5000
+[/DELAI]
+
+Le fichier à lire et celui à écrire.
+[PATHS]
+PathLecture	FichiersTxt/Lecture.txt
+PathEcriture	FichiersTxt/Ecriture.txt
+[/PATHS]
+
+
+Hamming : 0->Détection et 1->Correction.
+[HAMMING]
+Hamming	0
+[/HAMMING]
+
+
+Choix de perturbations (0 = Aucune; 1 = Type1; 2 = Type2; etc.) et leur probabilité.
+[ERREURS]
+ErrType0	0.25
+ErrType1	0
+ErrType2	0
+[/ERREURS]
+
+4 paramètre (c'est plus que 4 ça..)
+1. La taille du tampon T-C du Thread C
+2. La taille du tampon T-LLC utilisé de chaque côté du Thread C simulant le support de transmission (Protocole6).
+3. Le délais de temporisation (time-out).
+4. Le fichier à copier.
+5. L'emplacement de destination pour la copie du fichier.
+6. Choix de l'utilisation du code Hamming --> détecteur ou correcteur.
+7. Les erreurs.
+
+
+
+
+ 
