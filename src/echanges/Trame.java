@@ -44,6 +44,11 @@ public class Trame
         return this.octData;
     }
 
+    public Octet getOctet(int position)
+    {
+        return octData[position];
+    }
+
     @Override
     public boolean equals(Object obj)
     {
@@ -80,14 +85,14 @@ public class Trame
     }
 
     public int getNumTrame()
-    {     
+    {
         return Byte.toUnsignedInt(octData[3].value);
 
     }
-    
+
     public int getNumTrameHamming()
     {
-     // Crée un clone.
+        // Crée un clone.
         Trame tAvecHamming = new Trame(this);
         Trame tSansHamming = retireHamming(tAvecHamming);
         // Le temps que Hamming soit mis en place.
