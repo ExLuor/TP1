@@ -15,7 +15,7 @@ public class Trame
 
     public enum Type
     {
-        Data, ACK, NAK
+        Data, ACK, NAK, Unknown
     };
 
     Octet[] octData;
@@ -66,7 +66,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(tSansHamming.getData()[0].getValue());
+        return Byte.toUnsignedInt(tSansHamming.octData[0].getValue());
     }
 
     public void setDest(int dest)
@@ -86,7 +86,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(tSansHamming.getData()[1].getValue());
+        return Byte.toUnsignedInt(tSansHamming.octData[1].getValue());
     }
 
     public void setSender(int sender)
@@ -113,7 +113,7 @@ public class Trame
         {
             return Type.NAK;
         }
-        return null;
+        return Type.Unknown;
     }
 
     /*
@@ -142,17 +142,17 @@ public class Trame
     /*
      * GET/SET DU BYTE NUMERO DE TRAME.
      */
-    public int getNumTrame()
+    public byte getNumTrame()
     {
-        return Byte.toUnsignedInt(octData[3].getValue());
+        return octData[3].getValue();
     }
 
-    public void setNumTrame(int numTrame)
+    public void setNumTrame(byte numTrame)
     {
-        octData[3] = new Octet((byte) numTrame);
+        octData[3] = new Octet(numTrame);
     }
 
-    public int getNumTrameHamming()
+    public byte getNumTrameHamming()
     {
         // Crée un clone.
         Trame tAvecHamming = new Trame(this);
@@ -162,7 +162,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(tSansHamming.getData()[3].getValue());
+        return tSansHamming.octData[3].getValue();
     }
 
     /*

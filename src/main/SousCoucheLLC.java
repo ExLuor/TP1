@@ -75,13 +75,13 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
 
         int sender = t.getSenderHamming();
         removeInfosToTrame(t);
-        int numTrame = t.getNumTrame();
+        byte numTrame = t.getNumTrame();
 
         switch (t.getType()) {
         case Data:
             if (LLC_In.alreadyExist(numTrame)) {
-                System.out.println(
-                        "La station " + nomCouche + " envoie un ACK " + numTrame + " car la trame a déjà été reçue.");
+                System.out.println("La station " + nomCouche + " envoie un ACK " + Byte.toUnsignedInt(numTrame)
+                        + " car la trame a déjà été reçue.");
                 sendACK(numTrame, sender);
                 LLC_In.remove(t);
                 return;
@@ -93,22 +93,21 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
                 } else {
                     sendTrame();
                 }
-                sendACK(pos - 1, sender);
-                System.out.println(
-                        "La station " + nomCouche + " envoie un ACK " + (pos - 1) + " car la trame a bien été reçue.");
+                sendACK((byte)(pos - 1), sender);
+                System.out.println("La station " + nomCouche + " envoie un ACK " + Byte.toUnsignedInt((byte) (pos - 1))
+                        + " car la trame a bien été reçue.");
                 return;
             }
 
-            if (numTrame < pos)
-                return;
+            // TODO: Recevoir de vieux messages
 
             if (NAK_History.contains(pos)) {
-                sendACK(pos - 1, sender);
-                System.out.println("La station " + nomCouche + " envoie un ACK " + (pos - 1)
-                        + " car la station attend toujours la trame " + pos + ".");
+                sendACK((byte)(pos - 1), sender);
+                System.out.println("La station " + nomCouche + " envoie un ACK " + Byte.toUnsignedInt((byte) (pos - 1))
+                        + " car la station attend toujours la trame " + Byte.toUnsignedInt(pos) + ".");
             } else {
-                System.out.println(
-                        "La station " + nomCouche + " envoie un NAK " + (pos) + " car la trame n'a jamais été reçue.");
+                System.out.println("La station " + nomCouche + " envoie un NAK " + Byte.toUnsignedInt(pos)
+                        + " car la trame n'a jamais été reçue.");
                 sendNAK(pos, sender);
                 NAK_History.add(pos);
             }
@@ -117,20 +116,20 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
         case ACK:
             removeTrames(numTrame);
             LLC_In.remove(t);
-            System.out.println(
-                    "La station " + nomCouche + " a reçu un ACK " + numTrame + " et retire la trame correspondante.");
+            System.out.println("La station " + nomCouche + " a reçu un ACK " + Byte.toUnsignedInt(numTrame)
+                    + " et retire la trame correspondante.");
             break;
 
         case NAK:
             LLC_Out.resetTrame(numTrame);
             LLC_In.remove(t);
-            System.out.println("La station " + nomCouche + " a reçu un NAK " + numTrame
+            System.out.println("La station " + nomCouche + " a reçu un NAK " + Byte.toUnsignedInt(numTrame)
                     + " et se prépare à envoyer la trame à nouveau.");
             break;
         }
     }
 
-    private Trame createNAKTrame(int numTrame, int destinataire) {
+    private Trame createNAKTrame(byte numTrame, int destinataire) {
         Trame t = new Trame();
         t.setDest(destinataire);
         t.setSender(ID);
@@ -139,13 +138,13 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
         return t;
     }
 
-    private void sendNAK(int numTrame, int destinataire) {
+    private void sendNAK(byte numTrame, int destinataire) {
         Trame t = createNAKTrame(numTrame, destinataire);
         addInfosToTrame(t);
         bufferFromUp.add(t);
     }
 
-    private Trame createACKTrame(int numTrame, int destinataire) {
+    private Trame createACKTrame(byte numTrame, int destinataire) {
         Trame t = new Trame();
         t.setDest(destinataire);
         t.setSender(ID);
@@ -154,24 +153,22 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
         return t;
     }
 
-    private void sendACK(int numTrame, int destinataire) {
+    private void sendACK(byte numTrame, int destinataire) {
         Trame t = createACKTrame(numTrame, destinataire);
         addInfosToTrame(t);
         bufferFromUp.add(t);
     }
 
     private void sendTrames() {
-        byte i;
-        for (i = pos; i < pos + LLC_In.size(); i++) {
-            Trame t = LLC_In.getTrame(i);
+        for (int i = 0; i < LLC_In.size(); i++, pos++) {
+            Trame t = LLC_In.getTrame(pos);
             if (t == null) {
                 break;
             }
             sendToUp(t);
-            LLC_In.removeTrame(i);
-            NAK_History.remove(i);
+            LLC_In.removeTrame(pos);
+            NAK_History.remove(pos);
         }
-        pos = i;
     }
 
     private void sendTrame() {
@@ -182,12 +179,12 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
         pos++;
     }
 
-    private void removeTrames(int numTrame) {
+    private void removeTrames(byte numTrame) {
         int maxTrames = LLC_Out.size() - 1;
-        byte first = (byte) ((byte) numTrame - (byte) maxTrames);
+        byte first = (byte) (numTrame - (byte) maxTrames);
 
-        for (byte i = first; i <= numTrame; i++) {
-            LLC_Out.removeTrame(i);
+        for(int i = 0; i < LLC_Out.size(); i++) {
+            LLC_Out.removeTrame((byte)(first + i));
         }
     }
 
@@ -206,8 +203,8 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
             if (trameOut != null && transmission.addTrame(trameOut)) {
                 if (trameOut.getType() == Type.Data) {
                     LLC_Out.sendTrame(trameOut);
-                    System.out.println("La station " + nomCouche + " envoie la trame " + trameOut.getNumTrameHamming()
-                            + " au support de transmission.");
+                    System.out.println("La station " + nomCouche + " envoie la trame "
+                            + Byte.toUnsignedInt(trameOut.getNumTrameHamming()) + " au support de transmission.");
                 } else {
                     LLC_Out.remove(trameOut);
                 }

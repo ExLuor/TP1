@@ -67,7 +67,7 @@ public class TamponLLC {
         return false;
     }
 
-    public synchronized void removeTrame(int numTrame) {
+    public synchronized void removeTrame(byte numTrame) {
         for (int i = 0; i < tampon.length; i++) {
             if (tampon[i].trame != null && tampon[i].trame.getNumTrame() == numTrame) {
                 tampon[i].trame = null;
@@ -130,7 +130,7 @@ public class TamponLLC {
         return tampon.length;
     }
 
-    public void resetTrame(int numTrame) {
+    public void resetTrame(byte numTrame) {
         for (int i = 0; i < tampon.length; i++) {
             if (tampon[i].trame != null && tampon[i].trame.getNumTrame() == numTrame) {
                 tampon[i].isSent = false;
@@ -140,7 +140,7 @@ public class TamponLLC {
         }
     }
 
-    public boolean alreadyExist(int numTrame) {
+    public boolean alreadyExist(byte numTrame) {
         int repetition = 0;
         for (int i = 0; i < tampon.length; i++) {
             if (tampon[i].trame != null && tampon[i].trame.getNumTrame() == numTrame) {
@@ -150,7 +150,7 @@ public class TamponLLC {
         return repetition > 1;
     }
 
-    public Trame getTrame(int numTrame) {
+    public Trame getTrame(byte numTrame) {
         for (int i = 0; i < tampon.length; i++) {
             if (tampon[i].trame != null && tampon[i].trame.getNumTrame() == numTrame) {
                 return tampon[i].trame;
