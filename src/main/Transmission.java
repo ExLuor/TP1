@@ -97,8 +97,6 @@ public class Transmission implements Runnable
         // Sélection un octet au hasard.
         int posByte = rnd.nextInt(octData.length);
 
-        byte leByte = octData[posByte].getValue();
-
         // Position du bit à modifier.
         int posBit = (rnd.nextInt(8));
         // Valeur du bit.
