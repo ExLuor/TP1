@@ -23,6 +23,7 @@ public class TP1Main {
         String pathErreurs = "FichiersTxt/ErreursTransmission.txt";
 
         Transmission transmission = new Transmission(tailleTamponC, "Support de transmission");
+        transmission.setConfigs(config);
 
         Station stationA = new Station(pathLecture, "", transmission, "A", delai, taileTamponLLC, hamming);
         Station stationB = new Station("", pathEcriture, transmission, "B", delai, taileTamponLLC, hamming);

@@ -66,7 +66,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(octData[0].value);
+        return Byte.toUnsignedInt(tSansHamming.getData()[0].getValue());
     }
 
     public void setDest(int dest)
@@ -86,7 +86,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(octData[1].value);
+        return Byte.toUnsignedInt(tSansHamming.getData()[1].getValue());
     }
 
     public void setSender(int sender)
@@ -101,15 +101,15 @@ public class Trame
 
     public Type getType()
     {
-        if (octData[2].value == (byte) 0b01011010)
+        if (octData[2].getValue() == (byte) 0b01011010)
         {
             return Type.Data;
         }
-        else if (octData[2].value == (byte) 0b10000001)
+        else if (octData[2].getValue() == (byte) 0b10000001)
         {
             return Type.ACK;
         }
-        else if (octData[2].value == (byte) 0b1101101)
+        else if (octData[2].getValue() == (byte) 0b1101101)
         {
             return Type.NAK;
         }
@@ -144,7 +144,7 @@ public class Trame
      */
     public int getNumTrame()
     {
-        return Byte.toUnsignedInt(octData[3].value);
+        return Byte.toUnsignedInt(octData[3].getValue());
     }
 
     public void setNumTrame(int numTrame)
@@ -162,7 +162,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(octData[3].value);
+        return Byte.toUnsignedInt(tSansHamming.getData()[3].getValue());
     }
 
     /*
