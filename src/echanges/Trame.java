@@ -66,7 +66,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(octData[0].value);
+        return Byte.toUnsignedInt(tSansHamming.getData()[0].value);
     }
 
     public void setDest(int dest)
@@ -86,7 +86,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(octData[1].value);
+        return Byte.toUnsignedInt(tSansHamming.getData()[1].value);
     }
 
     public void setSender(int sender)
@@ -162,7 +162,7 @@ public class Trame
         {
             return -1;
         }
-        return Byte.toUnsignedInt(octData[3].value);
+        return Byte.toUnsignedInt(tSansHamming.getData()[3].value);
     }
 
     /*
