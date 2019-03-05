@@ -27,18 +27,17 @@ public class Octet
     {
         if (bitValue)
         {
-            value = (byte) (value | (1 << (position /*- 1*/)));
+            value = (byte) (value | (1 << (position)));
         }
         else
         {
-            value = (byte) (value & ~(1 << (position /*- 1*/)));
+            value = (byte) (value & ~(1 << (position)));
         }
     }
 
     public int getBit(int position)
     {
         return this.value >> position & 1;
-        // return 0;
     }
 
     @Override
