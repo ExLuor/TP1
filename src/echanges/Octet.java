@@ -31,7 +31,7 @@ public class Octet
         }
         else
         {
-            value = (byte) (value & ~(1 << (position - 1)));
+            value = (byte) (value &= ~(1 << (position - 1)));
         }
     }
 
