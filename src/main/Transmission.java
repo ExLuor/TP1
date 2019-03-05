@@ -4,59 +4,49 @@ import java.util.HashMap;
 
 import echanges.Trame;
 
-public class Transmission implements Runnable
-{
+public class Transmission implements Runnable {
     private String nomCouche;
     private TamponCirculaire tampon;
-    private final long LATENCY = 100; // en ms
+    private final long LATENCY = 500; // en ms
     private HashMap<Integer, SousCouche<?, Trame>> couchesReceptrices;
 
-    public Transmission(int grandeurBuffer, String nomCouche)
-    {
+    public Transmission(int grandeurBuffer, String nomCouche) {
         this.nomCouche = nomCouche;
         tampon = new TamponCirculaire(grandeurBuffer);
         couchesReceptrices = new HashMap<Integer, SousCouche<?, Trame>>();
     }
 
-    public void addCoucheReceptrice(int stationID, SousCouche<?, Trame> couche)
-    {
+    public synchronized void addCoucheReceptrice(int stationID, SousCouche<?, Trame> couche) {
         couchesReceptrices.put(stationID, couche);
     }
 
     @Override
-    public void run()
-    {
-        if (tampon.isEmpty())
-        {
-            return;
-        }
+    public void run() {
+        while (true) {
+            if (tampon.isEmpty()) {
+                continue;
+            }
 
-        long timeToWait = LATENCY - (System.currentTimeMillis() - tampon.getLastAddedTime());
-        sleep(timeToWait);
-        Trame t = tampon.poll();
-        t = addErrors(t);
-        sendTrame(t);
+            long timeToWait = LATENCY - (System.currentTimeMillis() - tampon.getLastAddedTime());
+            sleep(timeToWait);
+            Trame t = tampon.poll();
+            addErrors(t);
+            sendTrame(t);
+        }
     }
 
-    protected void sleep(long sleepTime)
-    {
-        try
-        {
-            if (sleepTime >= 0)
-            {
+    protected void sleep(long sleepTime) {
+        try {
+            if (sleepTime >= 0) {
                 Thread.sleep(sleepTime);
             }
-        }
-        catch (InterruptedException ex)
-        {
+        } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
     }
 
-    public boolean addTrame(Trame trame)
-    {
-        if (tampon.add(trame))
-        {
+    public boolean addTrame(Trame trame) {
+        if (tampon.add(trame)) {
             System.out.println(
                     "La couche " + nomCouche + " a ajouté la trame " + trame.getNumTrameHamming() + " à son tampon.");
             return true;
@@ -64,18 +54,14 @@ public class Transmission implements Runnable
         return false;
     }
 
-    private Trame addErrors(Trame t)
-    {
+    private void addErrors(Trame t) {
         // TODO: Ajouter les erreurs à la trame
-        return t;
     }
 
-    private void sendTrame(Trame t)
-    {
+    private void sendTrame(Trame t) {
         int numDest = t.getDestHamming();
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
-        if (dest == null)
-        {
+        if (dest == null) {
             return;
         }
         dest.addFromDown(t);

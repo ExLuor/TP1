@@ -4,19 +4,16 @@ import java.util.Arrays;
 
 import echanges.Trame;
 
-public class TamponLLC
-{
+public class TamponLLC {
 
-    class TamponFormat implements Comparable<TamponFormat>
-    {
+    class TamponFormat implements Comparable<TamponFormat> {
         public Trame trame = null;
         public boolean isSent = false;
         public long timeSent = 0;
         public boolean valid = false;
 
         @Override
-        public int compareTo(TamponFormat t)
-        {
+        public int compareTo(TamponFormat t) {
             if (this.trame == null && t.trame == null)
                 return 0;
             if (this.trame == null)
@@ -37,22 +34,17 @@ public class TamponLLC
     private TamponFormat[] tampon;
     private long timeout;
 
-    public TamponLLC(int size, int timeout)
-    {
+    public TamponLLC(int size, int timeout) {
         this.timeout = timeout;
         tampon = new TamponFormat[size];
-        for (int i = 0; i < tampon.length; i++)
-        {
+        for (int i = 0; i < tampon.length; i++) {
             tampon[i] = new TamponFormat();
         }
     }
 
-    public boolean addTrame(Trame trame)
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].trame == null)
-            {
+    public boolean addTrame(Trame trame) {
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].trame == null) {
                 tampon[i].trame = trame;
                 tampon[i].isSent = false;
                 tampon[i].timeSent = 0;
@@ -64,12 +56,9 @@ public class TamponLLC
         return false;
     }
 
-    public void removeTrame(int NumTrame)
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].trame != null && tampon[i].trame.getNumTrame() == NumTrame)
-            {
+    public void removeTrame(int NumTrame) {
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].trame != null && tampon[i].trame.getNumTrame() == NumTrame) {
                 tampon[i].trame = null;
                 tampon[i].isSent = false;
                 tampon[i].timeSent = 0;
@@ -80,75 +69,59 @@ public class TamponLLC
         }
     }
 
-    public boolean isFull()
-    {
-        for (TamponFormat t : tampon)
-        {
+    public boolean isFull() {
+        for (TamponFormat t : tampon) {
             if (t.trame == null)
                 return false;
         }
         return true;
     }
 
-    public boolean isEmpty()
-    {
-        for (TamponFormat t : tampon)
-        {
+    public boolean isEmpty() {
+        for (TamponFormat t : tampon) {
             if (t.trame != null)
                 return false;
         }
         return true;
     }
 
-    public Trame getNextTrame()
-    {
+    public Trame getNextTrame() {
         temporisation();
 
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].trame != null && !tampon[i].isSent)
-            {
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].trame != null && !tampon[i].isSent) {
                 return tampon[i].trame;
             }
         }
         return null;
     }
 
-    public void sendTrame(Trame t)
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].trame != null && tampon[i].trame == t)
-            {
+    public void sendTrame(Trame t) {
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].trame != null && tampon[i].trame == t) {
                 tampon[i].isSent = true;
                 tampon[i].timeSent = System.currentTimeMillis();
             }
         }
     }
 
-    private void temporisation()
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (System.currentTimeMillis() - tampon[i].timeSent <= timeout)
-            {
+    private void temporisation() {
+        for (int i = 0; i < tampon.length; i++) {
+            long timeLeft = timeout - (System.currentTimeMillis() - tampon[i].timeSent);
+            if (timeLeft <= 0) {
                 tampon[i].isSent = false;
                 tampon[i].timeSent = 0;
             }
         }
     }
 
-    public int size()
-    {
+    public int size() {
         return tampon.length;
     }
 
-    public void resetTrame(int numTrame)
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].trame.getNumTrame() == numTrame)
-            {
+    public void resetTrame(int numTrame) {
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].trame.getNumTrame() == numTrame) {
                 tampon[i].isSent = false;
                 tampon[i].timeSent = 0;
                 tampon[i].valid = false;
@@ -156,36 +129,28 @@ public class TamponLLC
         }
     }
 
-    public boolean alreadyExist(int numTrame)
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].trame.getNumTrame() == numTrame)
-            {
-                return true;
+    public boolean alreadyExist(int numTrame) {
+        int repetition = 0;
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].trame != null && tampon[i].trame.getNumTrame() == numTrame) {
+                repetition++;
             }
         }
-        return false;
+        return repetition > 1;
     }
 
-    public Trame getTrame(int numTrame)
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].trame.getNumTrame() == numTrame)
-            {
+    public Trame getTrame(int numTrame) {
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].trame != null && tampon[i].trame.getNumTrame() == numTrame) {
                 return tampon[i].trame;
             }
         }
         return null;
     }
 
-    public Trame getNextInvalidTrame()
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].valid == false)
-            {
+    public Trame getNextInvalidTrame() {
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].valid == false) {
                 tampon[i].valid = true;
                 return tampon[i].trame;
             }
@@ -193,12 +158,9 @@ public class TamponLLC
         return null;
     }
 
-    public void remove(Trame t)
-    {
-        for (int i = 0; i < tampon.length; i++)
-        {
-            if (tampon[i].valid == false)
-            {
+    public void remove(Trame t) {
+        for (int i = 0; i < tampon.length; i++) {
+            if (tampon[i].valid == false) {
                 tampon[i].trame = null;
                 tampon[i].isSent = false;
                 tampon[i].timeSent = 0;

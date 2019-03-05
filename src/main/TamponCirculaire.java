@@ -27,7 +27,7 @@ public class TamponCirculaire
         nbElems = 0;
     }
 
-    public boolean add(Trame value)
+    public synchronized boolean add(Trame value)
     {
         if (!isFull())
         {
