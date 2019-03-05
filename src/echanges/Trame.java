@@ -208,7 +208,7 @@ public class Trame
 
         for (Octet o : octData)
         {
-            s = o.toString() + " " +s;
+            s += o.toString() + " ";
         }
         return s;
     }

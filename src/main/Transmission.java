@@ -117,7 +117,7 @@ public class Transmission implements Runnable
             bit2 = 1;
         }
         t = new Trame(octData);
-        printErr(t, bit1, bit2, posByte, posBit, tIni);
+//        printErr(t, bit1, bit2, posByte, posBit, tIni);
     }
 
     private void applyErrType1(Trame t)
