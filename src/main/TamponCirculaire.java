@@ -2,10 +2,8 @@ package main;
 
 import echanges.Trame;
 
-public class TamponCirculaire
-{
-    class CirculaireFormat
-    {
+public class TamponCirculaire {
+    class CirculaireFormat {
         Trame trame = null;
         long timeAdded = 0;
     }
@@ -15,11 +13,9 @@ public class TamponCirculaire
     private int rear;
     private int nbElems;
 
-    public TamponCirculaire(int size)
-    {
+    public TamponCirculaire(int size) {
         tampon = new CirculaireFormat[size];
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             tampon[i] = new CirculaireFormat();
         }
         front = 0;
@@ -27,10 +23,8 @@ public class TamponCirculaire
         nbElems = 0;
     }
 
-    public synchronized boolean add(Trame value)
-    {
-        if (!isFull())
-        {
+    public synchronized boolean add(Trame value) {
+        if (!isFull()) {
             nbElems++;
             rear = (rear + 1) % tampon.length;
             tampon[rear].trame = value;
@@ -40,33 +34,30 @@ public class TamponCirculaire
         return false;
     }
 
-    public Trame poll()
-    {
-        if (!isEmpty())
-        {
+    public synchronized Trame poll() {
+        if (!isEmpty()) {
             nbElems--;
             front = (front + 1) % tampon.length;
-            return tampon[front].trame;
+            Trame t = tampon[front].trame;
+            tampon[front].trame = null;
+            tampon[front].timeAdded = 0;
+            return t;
         }
         return null;
     }
 
-    public long getLastAddedTime()
-    {
-        if (!isEmpty())
-        {
-            return tampon[front].timeAdded;
+    public long getLastAddedTime() {
+        if (!isEmpty()) {
+            return tampon[(front + 1) % tampon.length].timeAdded;
         }
         return 0;
     }
 
-    public boolean isFull()
-    {
+    public boolean isFull() {
         return nbElems == tampon.length;
     }
 
-    public boolean isEmpty()
-    {
+    public synchronized boolean isEmpty() {
         return nbElems == 0;
     }
 }
