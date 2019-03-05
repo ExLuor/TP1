@@ -27,11 +27,11 @@ Hamming	0
 
 
 Choix de perturbations (0 = Aucune; 1 = Type1; 2 = Type2; etc.) et leur probabilité.
-ErrType0 = Possibilité qu'un bit soit altéré dans la transmission.
-ErrType1 = Possibilité de perdre complètement une trame.
-ErrType2 = Possibilité d'interchanger l'ordre de deux trames.
+ErrType0 : Probabilité qu'une trame subisse l'altération d'un bit.
+ErrType1 : Possibilité de perdre complètement une trame.
+ErrType2 : Possibilité d'interchanger l'ordre de deux trames.
 [ERREURS]
-ErrType0	0.25
+ErrType0	1
 ErrType1	0
 ErrType2	0
 [/ERREURS]

@@ -69,7 +69,7 @@ public class SousCoucheFichier extends SousCouche<Octet, Octet>
 
         try
         {
-            stream.write(data.value);
+            stream.write(data.getValue());
         }
         catch (IOException e)
         {

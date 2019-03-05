@@ -6,7 +6,7 @@ package echanges;
 public class Octet
 {
 
-    public byte value;
+    private byte value;
 
     public Octet()
     {
@@ -18,11 +18,21 @@ public class Octet
         value = octet;
     }
 
+    public byte getValue()
+    {
+        return this.value;
+    }
+
     public void changeBit(int position, boolean bitValue)
     {
         if (bitValue)
+        {
             value = (byte) (value | (1 << (position - 1)));
-        value = (byte) (value & ~(1 << (position - 1)));
+        }
+        else
+        {
+            value = (byte) (value & ~(1 << (position - 1)));
+        }
     }
 
     @Override
