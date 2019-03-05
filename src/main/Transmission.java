@@ -38,7 +38,8 @@ public class Transmission implements Runnable
             }
 
             long timeToWait = LATENCY - (System.currentTimeMillis() - tampon.getLastAddedTime());
-            if (timeToWait > 0) {
+            if (timeToWait > 0)
+            {
                 continue;
             }
             Trame t = tampon.poll();
@@ -99,7 +100,7 @@ public class Transmission implements Runnable
         byte leByte = octData[posByte].getValue();
 
         // Position du bit à modifier.
-        int posBit = (rnd.nextInt(8)+1);
+        int posBit = (rnd.nextInt(8) + 1);
         // Valeur du bit.
         int bit1 = leByte >> (8 - (posBit + 1)) & 0x0001;
         int bit2 = -1;
@@ -121,24 +122,6 @@ public class Transmission implements Runnable
         printErr(t, bit1, bit2, posByte, posBit, tIni);
     }
 
-    // Temporaire pour les erreurs.
-    private void printErr(Trame t, int bit1, int bit2, int posByte, int posBit, String tIni)
-    {
-        String str = new String();
-        str = "********************** Application de l'errType0\n";
-        str += "\tTrame initiale = " + tIni + "\n";
-        str += "\tTrame finale   = " + t.toString() + "\n";
-        str += "\tByte = " + posByte + "\t de valeur finale = " + t.getData()[posByte] + "\n";
-        str += "\tBit = " + posBit + "\tInitial = " + bit1 + "\tFinale = " + bit2 + "\n";
-
-        System.out.println(str);
-        // System.out.println(x);
-        //
-        // );sur le bit " + posBit + " de l'octet "
-        // + posByte + " qui est passé de la valeur " + bit1 + " à la valeur " +
-        // bit2);
-    }
-
     private void applyErrType1(Trame t)
     {
         // TODO : Si on ajoute la perte complète de la trame.
@@ -149,7 +132,20 @@ public class Transmission implements Runnable
         // TODO : Si on ajoute l'interchange de deux trames.
     }
 
-    private synchronized void sendTrame(Trame t) {
+    // Temporaire pour les erreurs.
+    private void printErr(Trame t, int bit1, int bit2, int posByte, int posBit, String tIni)
+    {
+        String str = new String();
+        str = "********************** Application de l'errType0\n";
+        str += "\tTrame initiale = " + tIni + "\n";
+        str += "\tTrame finale   = " + t.toString() + "\n";
+        str += "\tByte = " + posByte + "\t de valeur finale = " + t.getData()[posByte] + "\n";
+        str += "\tBit = " + posBit + "\tInitial = " + bit1 + "\tFinale = " + bit2 + "\n";
+        System.out.println(str);
+    }
+
+    private synchronized void sendTrame(Trame t)
+    {
         int numDest = t.getDestHamming();
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
         if (dest == null)
