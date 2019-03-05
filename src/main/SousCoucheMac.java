@@ -77,7 +77,6 @@ public class SousCoucheMac extends SousCouche<Octet, Trame> {
 
     @Override
     protected void sendMessageToDown() {
-        // TODO supporter les trames avec plusieurs octets
         Octet o = bufferFromUp.poll();
         if (o == null)
             return;

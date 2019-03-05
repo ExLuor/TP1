@@ -14,8 +14,8 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
     private Transmission transmission;
     private TamponLLC LLC_In;
     private TamponLLC LLC_Out;
-    private HashSet<Integer> NAK_History;
-    private int pos;
+    private HashSet<Byte> NAK_History;
+    private byte pos;
     private boolean corrigerHamming;
     private int ID;
 
@@ -26,7 +26,7 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
         LLC_In = new TamponLLC(grandeurTampon, timeout);
         LLC_Out = new TamponLLC(grandeurTampon, timeout);
         pos = 0;
-        NAK_History = new HashSet<Integer>();
+        NAK_History = new HashSet<Byte>();
         this.corrigerHamming = corrigerHamming;
         ID = stationID;
     }
@@ -76,7 +76,7 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
         int sender = t.getSenderHamming();
         removeInfosToTrame(t);
         int numTrame = t.getNumTrame();
-        // TODO: Rendre ça plus clean si on a le temps.. ce qu'on a pas
+
         switch (t.getType()) {
         case Data:
             if (LLC_In.alreadyExist(numTrame)) {
@@ -88,12 +88,19 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
             }
 
             if (pos == numTrame) {
-                sendTrames();
+                if (NAK_History.contains(pos)) {
+                    sendTrames();
+                } else {
+                    sendTrame();
+                }
                 sendACK(pos - 1, sender);
                 System.out.println(
                         "La station " + nomCouche + " envoie un ACK " + (pos - 1) + " car la trame a bien été reçue.");
                 return;
             }
+
+            if (numTrame < pos)
+                return;
 
             if (NAK_History.contains(pos)) {
                 sendACK(pos - 1, sender);
@@ -109,12 +116,14 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
 
         case ACK:
             removeTrames(numTrame);
+            LLC_In.remove(t);
             System.out.println(
                     "La station " + nomCouche + " a reçu un ACK " + numTrame + " et retire la trame correspondante.");
             break;
 
         case NAK:
             LLC_Out.resetTrame(numTrame);
+            LLC_In.remove(t);
             System.out.println("La station " + nomCouche + " a reçu un NAK " + numTrame
                     + " et se prépare à envoyer la trame à nouveau.");
             break;
@@ -152,22 +161,32 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
     }
 
     private void sendTrames() {
-        for(int i = pos; i < pos + LLC_In.size(); i++) {
+        byte i;
+        for (i = pos; i < pos + LLC_In.size(); i++) {
             Trame t = LLC_In.getTrame(i);
-            if(t == null) {
-                pos = i;
-                return;
+            if (t == null) {
+                break;
             }
             sendToUp(t);
             LLC_In.removeTrame(i);
+            NAK_History.remove(i);
         }
+        pos = i;
+    }
+
+    private void sendTrame() {
+        Trame t = LLC_In.getTrame(pos);
+        sendToUp(t);
+        LLC_In.removeTrame(pos);
+        NAK_History.remove(pos);
+        pos++;
     }
 
     private void removeTrames(int numTrame) {
-        int maxTrames = LLC_Out.size();
-        int first = numTrame - maxTrames;
+        int maxTrames = LLC_Out.size() - 1;
+        byte first = (byte) ((byte) numTrame - (byte) maxTrames);
 
-        for (int i = first; i <= numTrame; i++) {
+        for (byte i = first; i <= numTrame; i++) {
             LLC_Out.removeTrame(i);
         }
     }
@@ -185,10 +204,10 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
         if (!LLC_Out.isEmpty()) {
             Trame trameOut = LLC_Out.getNextTrame();
             if (trameOut != null && transmission.addTrame(trameOut)) {
-                if(trameOut.getType() == Type.Data) {
-                LLC_Out.sendTrame(trameOut);
-                System.out.println("La station " + nomCouche + " envoie la trame " + trameOut.getNumTrameHamming()
-                        + " au support de transmission.");
+                if (trameOut.getType() == Type.Data) {
+                    LLC_Out.sendTrame(trameOut);
+                    System.out.println("La station " + nomCouche + " envoie la trame " + trameOut.getNumTrameHamming()
+                            + " au support de transmission.");
                 } else {
                     LLC_Out.remove(trameOut);
                 }

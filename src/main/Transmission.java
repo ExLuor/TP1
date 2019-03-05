@@ -38,11 +38,12 @@ public class Transmission implements Runnable
             }
 
             long timeToWait = LATENCY - (System.currentTimeMillis() - tampon.getLastAddedTime());
-            if (timeToWait > 0)
-            {
+            if (timeToWait > 0) {
                 continue;
             }
             Trame t = tampon.poll();
+            if (t == null)
+                continue;
             addErrors(t);
             sendTrame(t);
         }
@@ -148,8 +149,7 @@ public class Transmission implements Runnable
         // TODO : Si on ajoute l'interchange de deux trames.
     }
 
-    private void sendTrame(Trame t)
-    {
+    private synchronized void sendTrame(Trame t) {
         int numDest = t.getDestHamming();
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
         if (dest == null)

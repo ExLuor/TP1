@@ -1,6 +1,6 @@
 Taille du tampon "T-C" du "Thread C" en trames.
 [TAMPON_C]
-TailleTamponC	8
+TailleTamponC	16
 [/TAMPON_C]
 
 Taille des tampons "T-LLC" de chaque côté du "Thread C" en trames.
