@@ -27,11 +27,11 @@ public class Octet
     {
         if (bitValue)
         {
-            value = (byte) (value | (1 << (position)));
+            value |= (1 << position);
         }
         else
         {
-            value = (byte) (value & ~(1 << (position)));
+            value &= ~(1 << position);
         }
     }
 

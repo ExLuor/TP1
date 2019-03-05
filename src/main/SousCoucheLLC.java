@@ -99,7 +99,9 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
                 return;
             }
 
-            // TODO: Recevoir de vieux messages
+            if(isTrameOld(t)) {
+                return;
+            }
 
             if (NAK_History.contains(pos)) {
                 sendACK((byte)(pos - 1), sender);
@@ -127,6 +129,15 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
                     + " et se prépare à envoyer la trame à nouveau.");
             break;
         }
+    }
+    
+    private boolean isTrameOld(Trame t) {
+        for(byte i = pos; i < pos + LLC_In.size(); i++) {
+            if(t.getNumTrame() == i) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private Trame createNAKTrame(byte numTrame, int destinataire) {

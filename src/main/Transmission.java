@@ -11,13 +11,13 @@ public class Transmission implements Runnable {
     private TamponCirculaire tampon;
     private final long LATENCY = 500; // en ms
     private HashMap<Integer, SousCouche<?, Trame>> couchesReceptrices;
-    private HashMap<String, String> configs;
+    private int freqErreur;
 
-    public Transmission(int grandeurBuffer, String nomCouche) {
+    public Transmission(int grandeurBuffer, String nomCouche, int freqErreur) {
         this.nomCouche = nomCouche;
         tampon = new TamponCirculaire(grandeurBuffer);
         couchesReceptrices = new HashMap<Integer, SousCouche<?, Trame>>();
-        configs = new HashMap<String, String>();
+        this.freqErreur = freqErreur;
     }
 
     public synchronized void addCoucheReceptrice(int stationID, SousCouche<?, Trame> couche) {
@@ -43,10 +43,6 @@ public class Transmission implements Runnable {
         }
     }
 
-    public void setConfigs(HashMap<String, String> conf) {
-        this.configs = conf;
-    }
-
     public synchronized boolean addTrame(Trame trame) {
         if (tampon.add(trame)) {
             System.out.println("La couche " + nomCouche + " a ajouté la trame "
@@ -58,68 +54,32 @@ public class Transmission implements Runnable {
 
     private void addErrors(Trame t) {
         Random rnd = new Random();
-        int e1 = (int) (Double.parseDouble(configs.get("ErrType0")) * 100);
-        int e2 = (int) (Double.parseDouble(configs.get("ErrType1")) * 100);
-        int e3 = (int) (Double.parseDouble(configs.get("ErrType2")) * 100);
-        int seuil = rnd.nextInt(100);
-        if (e1 >= seuil) {
-            applyErrType0(t);
+        int luckyNumber = rnd.nextInt(freqErreur);
+        if (luckyNumber == 0) {
+            modifierBits(t);
+            System.out.println("Ajout d'erreurs dans la trame " + Byte.toUnsignedInt(t.getNumTrameHamming())
+                    + " en modifiant certain bits.");
         }
-        if (e2 >= seuil) {
-            applyErrType1(t);
-        }
-        if (e3 >= seuil) {
-            applyErrType2(t);
-        }
-
     }
 
-    private void applyErrType0(Trame t) {
-        String tIni = t.toString();
+    private void modifierBits(Trame t) {
         Random rnd = new Random();
-        // Les données de cette trame.
-        Octet[] octData = t.getData();
-        // Sélection un octet au hasard.
-        int posByte = rnd.nextInt(octData.length);
+        int maxErreurs = t.getData().length / 2; // On ne veut pas trop en mettre quand même
+        Octet[] octData = t.getData(); // Les données de cette trame.
+        int nbErreurs = rnd.nextInt(maxErreurs) + 1;
 
-        // Position du bit à modifier.
-        int posBit = (rnd.nextInt(8));
-        // Valeur du bit.
-        int bit1 = octData[posByte].getBit(posBit);
-        int bit2 = -1;
-        // Le bit était à 1.
-        if (bit1 == 1) {
-            // Le bit sera maintenant 0.
-            octData[posByte].changeBit(posBit, false);
-            bit2 = 0;
+        for (int i = 0; i < nbErreurs; i++) {
+            // Sélection un octet au hasard.
+            int posByte = rnd.nextInt(octData.length);
+            // Position du bit à modifier.
+            int posBit = rnd.nextInt(8);
+            // Valeur du bit.
+            int bit = octData[posByte].getBit(posBit);
+            // On alterne la valeur du bit
+            octData[posByte].changeBit(posBit, !(bit == 1));
         }
-        // Le bit était à 0.
-        else {
-            // Le bit sera maintenant 1.
-            octData[posByte].changeBit(posBit, true);
-            bit2 = 1;
-        }
-        t = new Trame(octData);
-        printErr(t, bit1, bit2, posByte, posBit, tIni);
-    }
 
-    private void applyErrType1(Trame t) {
-        // TODO : Si on ajoute la perte complète de la trame.
-    }
-
-    private void applyErrType2(Trame t) {
-        // TODO : Si on ajoute l'interchange de deux trames.
-    }
-
-    // Temporaire pour les erreurs.
-    private void printErr(Trame t, int bit1, int bit2, int posByte, int posBit, String tIni) {
-        String str = new String();
-        str = "********************** Application de l'errType0\n";
-        str += "\tTrame initiale = " + tIni + "\n";
-        str += "\tTrame finale   = " + t.toString() + "\n";
-        str += "\tByte = " + posByte + "\t de valeur finale = " + t.getData()[posByte] + "\n";
-        str += "\tBit = " + posBit + "\tInitial = " + bit1 + "\tFinale = " + bit2 + "\n";
-        System.out.println(str);
+        t.setData(octData);
     }
 
     private synchronized void sendTrame(Trame t) {

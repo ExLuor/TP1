@@ -48,6 +48,10 @@ public class Trame
         return this.octData;
     }
 
+    public void setData(Octet[] octets) {
+        this.octData = octets;
+    }
+    
     public Octet getOctet(int position)
     {
         return octData[position];
