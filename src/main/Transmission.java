@@ -100,7 +100,7 @@ public class Transmission implements Runnable
         byte leByte = octData[posByte].getValue();
 
         // Position du bit à modifier.
-        int posBit = (rnd.nextInt(8) /*+ 1*/);
+        int posBit = (rnd.nextInt(8));
         // Valeur du bit.
         int bit1 = octData[posByte].getBit(posBit);
         int bit2 = -1;
