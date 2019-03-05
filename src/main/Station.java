@@ -10,7 +10,7 @@ public class Station {
             int timeout, int buffersize, boolean hamming) {
         ID = IdGenerator.GetID();
         coucheFichier = new SousCoucheFichier(nomFichierEntrant, nomFichierSortant, nomStation + 1);
-        coucheMac = new SousCoucheMac(nomStation + 2);
+        coucheMac = new SousCoucheMac(nomStation + 2, ID);
         coucheLLC = new SousCoucheLLC(nomStation + 3, buffersize, timeout, transmission, hamming, ID);
 
         coucheFichier.setCouches(null, coucheMac);
@@ -24,9 +24,17 @@ public class Station {
         return coucheLLC;
     }
 
+    public void setStationDest(int stationID) {
+        coucheMac.setStationDest(stationID);
+    }
+
     public void start() {
         new Thread(coucheLLC).start();
         new Thread(coucheMac).start();
         new Thread(coucheFichier).start();
+    }
+
+    public int getID() {
+        return ID;
     }
 }

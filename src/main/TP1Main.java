@@ -26,6 +26,9 @@ public class TP1Main {
 
         Station stationA = new Station(pathLecture, "", transmission, "A", delai, taileTamponLLC, hamming);
         Station stationB = new Station("", pathEcriture, transmission, "B", delai, taileTamponLLC, hamming);
+        
+        stationA.setStationDest(stationB.getID());
+        stationB.setStationDest(stationA.getID());
 
         new Thread(transmission).start();
         stationB.start();

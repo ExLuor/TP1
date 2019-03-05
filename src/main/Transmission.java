@@ -28,24 +28,16 @@ public class Transmission implements Runnable {
             }
 
             long timeToWait = LATENCY - (System.currentTimeMillis() - tampon.getLastAddedTime());
-            sleep(timeToWait);
+            if(timeToWait > 0) {
+                continue;
+            }
             Trame t = tampon.poll();
             addErrors(t);
             sendTrame(t);
         }
     }
 
-    protected void sleep(long sleepTime) {
-        try {
-            if (sleepTime >= 0) {
-                Thread.sleep(sleepTime);
-            }
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public boolean addTrame(Trame trame) {
+    public synchronized boolean addTrame(Trame trame) {
         if (tampon.add(trame)) {
             System.out.println(
                     "La couche " + nomCouche + " a ajouté la trame " + trame.getNumTrameHamming() + " à son tampon.");

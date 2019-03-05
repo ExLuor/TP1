@@ -3,6 +3,7 @@ package main;
 import java.util.HashSet;
 
 import echanges.Trame;
+import echanges.Trame.Type;
 
 /*
  * Représente la couche A3 (sous-couche LLC de la station émettrice) et la
@@ -157,7 +158,7 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
                 pos = i;
                 return;
             }
-            //sendToUp(t);
+            sendToUp(t);
             LLC_In.removeTrame(i);
         }
     }
@@ -184,9 +185,13 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame> {
         if (!LLC_Out.isEmpty()) {
             Trame trameOut = LLC_Out.getNextTrame();
             if (trameOut != null && transmission.addTrame(trameOut)) {
+                if(trameOut.getType() == Type.Data) {
                 LLC_Out.sendTrame(trameOut);
                 System.out.println("La station " + nomCouche + " envoie la trame " + trameOut.getNumTrameHamming()
                         + " au support de transmission.");
+                } else {
+                    LLC_Out.remove(trameOut);
+                }
             }
         }
 
