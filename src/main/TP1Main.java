@@ -1,9 +1,24 @@
+/* TP1Main.java
+ * Description: Classe principale du programme
+ * Auteurs: Boulanger, Sammy       -
+ *          Durand-Chorel, Michael - 17 141 086
+ *          Leroux, Jérémie        - 16 186 994
+ * Date de fin: 6 mars 2019
+ * Entrées du programme : -
+ * Sotrties du programme : -
+ * 
+ */
+
 package main;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * Classe principale du programme
+ *
+ */
 public class TP1Main {
-
     public static void main(String[] args) {
         String pathConfig = "FichiersTxt/Config.txt";
 

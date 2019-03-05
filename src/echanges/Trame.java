@@ -1,6 +1,17 @@
+/* Trame.java
+ * Description: L'objet échangé entre les couches (2 et 3) et (3 ete C).
+ * Auteurs: Boulanger, Sammy       -
+ *          Durand-Chorel, Michael - 17 141 086
+ *          Leroux, Jérémie        - 16 186 994
+ * Date de fin: 6 mars 2019
+ * Entrées du programme : -
+ * Sotrties du programme : -
+ * 
+ */
+
 package echanges;
 
-/*
+/**
  * L'objet échangé entre les couches (2 et 3) et (3 ete C).
  */
 public class Trame
@@ -29,14 +40,14 @@ public class Trame
         }
     }
 
-    public Trame(Octet[] o)
+    public Trame(Octet[] octets)
     {
-        this.octData = o;
+        this.octData = octets;
     }
 
-    public Trame(Trame t)
+    public Trame(Trame trame)
     {
-        octData = t.octData.clone();
+        octData = trame.octData.clone();
     }
 
     /**
@@ -75,11 +86,13 @@ public class Trame
 
     public void setDest(int dest)
     {
-        byte b = (byte) dest;
-        octData[0] = new Octet(b);
+        byte destination = (byte) dest;
+        octData[0] = new Octet(destination);
     }
 
-    /* GET/SET DU BYTE DE L'EXPÉDITEUR. */
+    /**
+     *  GET/SET DU BYTE DE L'EXPÉDITEUR. 
+     */
     public int getSenderHamming()
     {
         // Crée un clone.
@@ -93,16 +106,15 @@ public class Trame
         return Byte.toUnsignedInt(tSansHamming.octData[1].getValue());
     }
 
-    public void setSender(int sender)
+    public void setSender(int senderID)
     {
-        byte b = (byte) sender;
-        octData[1] = new Octet(b);
+        byte sender = (byte) senderID;
+        octData[1] = new Octet(sender);
     }
 
     /*
      * GET/SET DU TYPE DE LA TRAME.
      */
-
     public Type getType()
     {
         if (octData[2].getValue() == (byte) 0b01011010)
@@ -177,27 +189,27 @@ public class Trame
         return this.octData[4];
     }
 
-    public void setDonnees(Octet o)
+    public void setDonnees(Octet octet)
     {
-        this.octData[4] = o;
+        this.octData[4] = octet;
     }
 
     @Override
     public boolean equals(Object obj)
     {
-        Trame t = (Trame) obj;
+        Trame trame = (Trame) obj;
         // Si la trame reçue est vide.
-        if (t.octData == null)
+        if (trame.octData == null)
         {
             return false;
         }
-        else if (octData.length != t.octData.length)
+        else if (octData.length != trame.octData.length)
         {
             return false;
         }
         for (int i = 0; i < octData.length; i++)
         {
-            if (!octData[i].equals(t.octData[i]))
+            if (!octData[i].equals(trame.octData[i]))
             {
                 return false;
             }
@@ -210,19 +222,19 @@ public class Trame
     {
         String s = new String();
 
-        for (Octet o : octData)
+        for (Octet octet : octData)
         {
-            s = o.toString() + " " +s;
+            s = octet.toString() + " " +s;
         }
         return s;
     }
 
-    public static Trame ajouteHamming(Trame t)
+    public static Trame ajouteHamming(Trame trame)
     {
         return null;
     }
 
-    public static Trame retireHamming(Trame t)
+    public static Trame retireHamming(Trame trame)
     {
         return null;
     }

@@ -1,11 +1,26 @@
-package main;
+/* Transmission.java
+ * Description: Classe du support de transmission qui connecte A3 à B3
+ * Auteurs: Boulanger, Sammy       -
+ *          Durand-Chorel, Michael - 17 141 086
+ *          Leroux, Jérémie        - 16 186 994
+ * Date de fin: 6 mars 2019
+ * Entrées du programme : -
+ * Sotrties du programme : -
+ * 
+ */
 
-import java.util.HashMap;
-import java.util.Random;
+package main;
 
 import echanges.Octet;
 import echanges.Trame;
+import java.util.HashMap;
+import java.util.Random;
 
+/**
+ * 
+ * Classe du support de transmission qui connecte A3 à B3
+ *
+ */
 public class Transmission implements Runnable {
     private String nomCouche;
     private TamponCirculaire tampon;
@@ -35,11 +50,11 @@ public class Transmission implements Runnable {
             if (timeToWait > 0) {
                 continue;
             }
-            Trame t = tampon.poll();
-            if (t == null)
+            Trame trame = tampon.poll();
+            if (trame == null)
                 continue;
-            addErrors(t);
-            sendTrame(t);
+            addErrors(trame);
+            sendTrame(trame);
         }
     }
 
@@ -52,20 +67,22 @@ public class Transmission implements Runnable {
         return false;
     }
 
-    private void addErrors(Trame t) {
+    private void addErrors(Trame trame) {
+        if(freqErreur == 0)
+            return;
         Random rnd = new Random();
         int luckyNumber = rnd.nextInt(freqErreur);
         if (luckyNumber == 0) {
-            modifierBits(t);
-            System.out.println("Ajout d'erreurs dans la trame " + Byte.toUnsignedInt(t.getNumTrameHamming())
+            modifierBits(trame);
+            System.out.println("Ajout d'erreurs dans la trame " + Byte.toUnsignedInt(trame.getNumTrameHamming())
                     + " en modifiant certain bits.");
         }
     }
 
-    private void modifierBits(Trame t) {
+    private void modifierBits(Trame trame) {
         Random rnd = new Random();
-        int maxErreurs = t.getData().length / 2; // On ne veut pas trop en mettre quand même
-        Octet[] octData = t.getData(); // Les données de cette trame.
+        int maxErreurs = trame.getData().length / 2; // On ne veut pas trop en mettre quand même
+        Octet[] octData = trame.getData(); // Les données de cette trame.
         int nbErreurs = rnd.nextInt(maxErreurs) + 1;
 
         for (int i = 0; i < nbErreurs; i++) {
@@ -79,18 +96,18 @@ public class Transmission implements Runnable {
             octData[posByte].changeBit(posBit, !(bit == 1));
         }
 
-        t.setData(octData);
+        trame.setData(octData);
     }
 
-    private synchronized void sendTrame(Trame t) {
-        int numDest = t.getDestHamming();
+    private synchronized void sendTrame(Trame trame) {
+        int numDest = trame.getDestHamming();
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
         if (dest == null) {
             return;
         }
-        dest.addFromDown(t);
-        System.out.println("La couche " + nomCouche + " a envoyé la trame " + Byte.toUnsignedInt(t.getNumTrameHamming())
-                + " à la station " + numDest + ".");
+        dest.addFromDown(trame);
+        System.out.println("La couche " + nomCouche + " a envoyé la trame "
+                + Byte.toUnsignedInt(trame.getNumTrameHamming()) + " à la station " + numDest + ".");
     }
 }
 

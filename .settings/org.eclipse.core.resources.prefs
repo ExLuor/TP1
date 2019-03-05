@@ -4,7 +4,6 @@ encoding//FichiersTxt/Ecriture.txt=UTF-8
 encoding//FichiersTxt/ErreursTransmission.txt=UTF-8
 encoding//FichiersTxt/Lecture.txt=UTF-8
 encoding//src/echanges/Octet.java=UTF-8
-encoding//src/echanges/Paquet.java=UTF-8
 encoding//src/echanges/Trame.java=UTF-8
 encoding//src/main/SousCouche.java=UTF-8
 encoding//src/main/SousCoucheFichier.java=UTF-8
