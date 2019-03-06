@@ -47,9 +47,11 @@ public class Trame
         this.octData = octets;
     }
 
-    public Trame(Trame trame) {
+    public Trame(Trame trame)
+    {
         octData = new Octet[trame.octData.length];
-        for(int i = 0; i < octData.length; i++) {
+        for (int i = 0; i < octData.length; i++)
+        {
             octData[i] = trame.octData[i].clone();
         }
     }
@@ -146,13 +148,6 @@ public class Trame
             return Type.NAK;
         }
         return Type.Unknown;
-    }
-
-    public Type getTypeHamming() {
-        Trame tAvecHamming = new Trame(this);
-        // Retire Hamming du clone.
-        Hamming.retireHamming(tAvecHamming);
-        return tAvecHamming.getType();
     }
 
     /*
