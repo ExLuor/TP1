@@ -49,26 +49,22 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame>
 
     private void addInfosToTrame(Trame trame)
     {
-        Hamming ham = new Hamming();
-        trame = ham.addHamming(trame);
+        Hamming.addHamming(trame);
     }
 
     private void removeInfosToTrame(Trame trame)
     {
-        Hamming ham = new Hamming();
-        trame = ham.retireHamming(trame);
+        Hamming.retireHamming(trame);
     }
 
     private boolean verifierTrameValide(Trame trame)
     {
-        Hamming ham = new Hamming();
-        return ham.valideHamming(trame);
+        return Hamming.valideHamming(trame);
     }
 
     private void corrigerTrame(Trame trame)
     {
-        Hamming ham = new Hamming();
-        trame = ham.corrigerTrame(trame);
+        Hamming.corrigerTrame(trame);
     }
 
     @Override
