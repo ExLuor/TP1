@@ -224,7 +224,7 @@ public class Trame
 
         for (Octet octet : octData)
         {
-            s += o.toString() + " ";
+            s += octet.toString() + " ";
         }
         return s;
     }

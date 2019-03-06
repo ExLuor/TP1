@@ -1,5 +1,9 @@
 package testsUnitaires;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,39 +13,72 @@ import echanges.Trame;
 
 public class TestHamming
 {
-    byte b0;
-    byte b1;
-    byte b2;
-    byte b3;
-    byte b4;
-    byte b5;
+    byte b0SansHam;
+    byte b1SansHam;
+    byte b2SansHam;
+    byte b3SansHam;
+    byte b4SansHam;
+    byte b5SansHam;
+    Octet[] octDataSansHam;
+    Trame tSansHamming;
 
-    Octet[] octData;
+    byte b0AvecHam;
+    byte b1AvecHam;
+    byte b2AvecHam;
+    byte b3AvecHam;
+    byte b4AvecHam;
+    byte b5AvecHam;
+    Octet[] octDataAvecHam;
+    Trame tAvecHamming;
+
+    int[] iSans = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0,
+            0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    int[] iAvec = { 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1,
+            1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0 };
 
     Hamming ham;
-
-    Trame tSansHamming;
 
     @Before
     public void setup()
     {
+        // Adresse de destination.
+        b0SansHam = (byte) 2;
+        b0AvecHam = (byte) 80;
+        // Adresse source.
+        b1SansHam = (byte) 1;
+        b1AvecHam = (byte) 33;
+        // Type de la trame (Data).
+        b2SansHam = (byte) 90;
+        b2AvecHam = (byte) 10;
+        // Numéro de la trame.
+        b3SansHam = (byte) 59;
+        b3AvecHam = (byte) 209;
+        // Données.
+        b4SansHam = (byte) 48;
+        b4AvecHam = (byte) 236;
+        // Remplissage.
+        b5SansHam = (byte) 0;
+        b5AvecHam = (byte) 192;
 
-        b0 = 2;     // Adresse de destination.
-        b1 = 1;     // Adresse source.
-        b2 = 90;    // Type de la trame (Data).
-        b3 = 59;    // Numéro de la trame.
-        b4 = 48;    // Données.
-        b5 = 0;     // Remplissage.
+        octDataSansHam = new Octet[6];
+        octDataSansHam[0] = new Octet(b0SansHam);
+        octDataSansHam[1] = new Octet(b1SansHam);
+        octDataSansHam[2] = new Octet(b2SansHam);
+        octDataSansHam[3] = new Octet(b3SansHam);
+        octDataSansHam[4] = new Octet(b4SansHam);
+        octDataSansHam[5] = new Octet(b5SansHam);
 
-        octData = new Octet[6];
-        octData[0] = new Octet(b0);
-        octData[1] = new Octet(b1);
-        octData[2] = new Octet(b2);
-        octData[3] = new Octet(b3);
-        octData[4] = new Octet(b4);
-        octData[5] = new Octet(b5);
+        octDataAvecHam = new Octet[6];
+        octDataAvecHam[0] = new Octet(b0AvecHam);
+        octDataAvecHam[1] = new Octet(b1AvecHam);
+        octDataAvecHam[2] = new Octet(b2AvecHam);
+        octDataAvecHam[3] = new Octet(b3AvecHam);
+        octDataAvecHam[4] = new Octet(b4AvecHam);
+        octDataAvecHam[5] = new Octet(b5AvecHam);
 
-        tSansHamming = new Trame(octData);
+        tSansHamming = new Trame(octDataSansHam);
+        tAvecHamming = new Trame(octDataAvecHam);
 
         ham = new Hamming();
     }
@@ -49,14 +86,134 @@ public class TestHamming
     @Test
     public void testAddHamming()
     {
-        ham.addHamming(tSansHamming);
+        Trame t = ham.addHamming(tSansHamming);
+        assertEquals(tAvecHamming, t);
     }
 
-    // @Test
-    // public void test()
-    // {
-    // fail("Not yet implemented");
-    // }
+    @Test
+    public void testRetireHamming()
+    {
+        Trame tS = ham.retireHamming(tAvecHamming);
+        assertEquals(tSansHamming, tS);
+    }
+
+    @Test
+    public void testOctToInt()
+    {
+        int[] iTest = ham.octToInt(octDataSansHam);
+        String str1 = new String();
+        String str2 = new String();
+        for (int i = 0; i < iSans.length; i++)
+        {
+            str1 += Integer.toString(iSans[i]);
+            str2 += Integer.toString(iTest[i]);
+        }
+        assertEquals(str1, str2);
+    }
+
+    @Test
+    public void testIntToOct()
+    {
+        Octet[] oTest = ham.intToOct(iSans);
+        Trame tS = new Trame(oTest);
+        assertEquals(tSansHamming, tS);
+    }
+
+    @Test
+    public void testFormatInt()
+    {
+        int[] iTest = ham.formatInt(iSans);
+        int[] cBit = ham.calculBitControl(iTest);
+
+        iTest[0] = (cBit[0] % 2) == 0 ? 0 : 1;
+        iTest[1] = (cBit[1] % 2) == 0 ? 0 : 1;
+        iTest[3] = (cBit[2] % 2) == 0 ? 0 : 1;
+        iTest[7] = (cBit[3] % 2) == 0 ? 0 : 1;
+        iTest[15] = (cBit[4] % 2) == 0 ? 0 : 1;
+        iTest[31] = (cBit[5] % 2) == 0 ? 0 : 1;
+        String str1 = new String();
+        String str2 = new String();
+        for (int i = 0; i < iAvec.length; i++)
+        {
+            str1 += Integer.toString(iAvec[i]);
+            str2 += Integer.toString(iTest[i]);
+        }
+        assertEquals(str1, str2);
+    }
+
+    @Test
+    public void testUnformatInt()
+    {
+        int[] iTest = ham.unformatInt(iAvec);
+        String str1 = new String();
+        String str2 = new String();
+        for (int i = 0; i < iSans.length; i++)
+        {
+            str1 += Integer.toString(iSans[i]);
+            str2 += Integer.toString(iTest[i]);
+        }
+        assertEquals(str1, str2);
+    }
+
+    @Test
+    public void testTrameValide()
+    {
+        boolean estValide = ham.valideHamming(tAvecHamming);
+        assertTrue(estValide);
+    }
+
+    @Test
+    public void testTrameInvalide1()
+    {
+        boolean estValide = ham.valideHamming(tSansHamming);
+        assertFalse(estValide);
+    }
+
+    @Test
+    public void testTrameInvalide2()
+    {
+        Octet[] oTestAvec = ham.intToOct(iAvec);
+        int[] iTest = ham.octToInt(oTestAvec);
+        // Change le bit 9 (de 0 à 1).
+        iTest[9] = 1;
+        Octet[] oFalse = ham.intToOct(iTest);
+        Trame tFalse = new Trame(oFalse);
+        boolean estValide = ham.valideHamming(tFalse);
+        assertFalse(estValide);
+    }
+
+    @Test
+    public void testCorrigerTrame1()
+    {
+        Octet[] oTestAvec = ham.intToOct(iAvec);
+        int[] iTest = ham.octToInt(oTestAvec);
+        // Change le bit 9 (de 0 à 1).
+        iTest[9] = 1;
+        Octet[] oFalse = ham.intToOct(iTest);
+        Trame tFalse = new Trame(oFalse);
+        Trame tCorrigee = ham.corrigerTrame(tFalse);
+        assertEquals(tAvecHamming, tCorrigee);
+    }
+
+    @Test
+    public void testCorrigerTrame2()
+    {
+        Octet[] oTestAvec = ham.intToOct(iAvec);
+        int[] iTest = ham.octToInt(oTestAvec);
+        // Change le bit 20 (de 1 à 0).
+        iTest[20] = 0;
+        Octet[] oFalse = ham.intToOct(iTest);
+        Trame tFalse = new Trame(oFalse);
+        Trame tCorrigee = ham.corrigerTrame(tFalse);
+        assertEquals(tAvecHamming, tCorrigee);
+    }
+
+    @Test
+    public void testCorrigerTrameCorrecte()
+    {
+        Trame tCorrigee = ham.corrigerTrame(tAvecHamming);
+        assertEquals(tAvecHamming, tCorrigee);
+    }
 
 }
 /* 
