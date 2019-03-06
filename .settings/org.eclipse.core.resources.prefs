@@ -1,7 +1,6 @@
 eclipse.preferences.version=1
 encoding//FichiersTxt/Config.txt=UTF-8
 encoding//FichiersTxt/Ecriture.txt=UTF-8
-encoding//FichiersTxt/ErreursTransmission.txt=UTF-8
 encoding//FichiersTxt/Lecture.txt=UTF-8
 encoding//src/echanges/Octet.java=UTF-8
 encoding//src/echanges/Trame.java=UTF-8
