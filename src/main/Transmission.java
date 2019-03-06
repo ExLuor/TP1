@@ -95,8 +95,7 @@ public class Transmission implements Runnable
 
     private void modifierBit(Trame trame) {
         Random rnd = new Random();
-        int maxErreurs = trame.getData().length / 2; // On ne veut pas trop en
-                                                     // mettre quand même
+
         Octet[] octData = trame.getData(); // Les données de cette trame.
 
         // Sélection un octet au hasard.

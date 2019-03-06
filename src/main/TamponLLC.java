@@ -110,6 +110,22 @@ public class TamponLLC
             }
         }
     }
+    
+    public synchronized void removeTrameHamming(byte numTrame)
+    {
+        for (int i = 0; i < tampon.length; i++)
+        {
+            if (tampon[i].trame != null && tampon[i].trame.getNumTrameHamming() == numTrame)
+            {
+                tampon[i].trame = null;
+                tampon[i].isSent = false;
+                tampon[i].timeSent = 0;
+                tampon[i].valid = false;
+                Arrays.sort(tampon);
+                return;
+            }
+        }
+    }
 
     public boolean isFull()
     {

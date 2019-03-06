@@ -208,7 +208,6 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame>
     private void sendNAK(byte numTrame, int destinataire)
     {
         Trame trame = createNAKTrame(numTrame, destinataire);
-        addInfosToTrame(trame);
         bufferFromUp.add(trame);
     }
 
@@ -225,7 +224,6 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame>
     private void sendACK(byte numTrame, int destinataire)
     {
         Trame trame = createACKTrame(numTrame, destinataire);
-        addInfosToTrame(trame);
         bufferFromUp.add(trame);
     }
 
@@ -260,7 +258,7 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame>
 
         for (int i = 0; i < LLC_Out.size(); i++)
         {
-            LLC_Out.removeTrame((byte) (first + i));
+            LLC_Out.removeTrameHamming((byte) (first + i));
         }
     }
 
@@ -281,7 +279,7 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame>
             Trame trameOut = LLC_Out.getNextTrame();
             if (trameOut != null && transmission.addTrame(trameOut))
             {
-                if (trameOut.getType() == Type.Data)
+                if (trameOut.getTypeHamming() == Type.Data)
                 {
                     LLC_Out.sendTrame(trameOut);
                     System.out.println("La station " + nomCouche + " envoie la trame "
