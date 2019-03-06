@@ -44,11 +44,11 @@ public class TestHamming
     Octet[] octDataAvecHam;
     Trame tAvecHamming;
 
-    int[] iSans = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0,
-            0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    int[] iSans = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    int[] iAvec = { 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1,
-            1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0 };
+    int[] iAvec = { 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0,
+            0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0 };
 
     @Before
     public void setup()
@@ -81,17 +81,17 @@ public class TestHamming
     private void byteAvecHamming()
     {
         // Adresse de destination.
-        b0AvecHam = (byte) 80;
+        b0AvecHam = (byte) 0b11000001;
         // Adresse source.
-        b1AvecHam = (byte) 33;
+        b1AvecHam = (byte) 0b00100001;
         // Type de la trame (Data).
-        b2AvecHam = (byte) 10;
+        b2AvecHam = (byte) 0b00001010;
         // Numéro de la trame.
-        b3AvecHam = (byte) 209;
+        b3AvecHam = (byte) 0b11010001;
         // Données.
-        b4AvecHam = (byte) 236;
+        b4AvecHam = (byte) 0b00000000;
         // Remplissage.
-        b5AvecHam = (byte) 192;
+        b5AvecHam = (byte) 0b11000100;
     }
 
     private void octSansHamming()
@@ -119,7 +119,7 @@ public class TestHamming
     @Test
     public void testAddHamming()
     {
-        Hamming.addHamming(tSansHamming);
+        Hamming.addHamming(tSansHamming);     
         assertEquals(tAvecHamming.toString(), tSansHamming.toString());
     }
 

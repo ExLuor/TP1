@@ -22,7 +22,6 @@ public class Hamming
     {
         // Décaler les positions dans la trame.
         Octet[] octDataAvant = trame.getData();
-
         int[] iSans = octToInt(octDataAvant);
         int[] iAvec = formatInt(iSans);
         int[] cBit = calculBitControl(iAvec);
@@ -38,6 +37,23 @@ public class Hamming
 
         trame.setData(octDataApres);
     }
+
+    // ************************************************
+    // JUSTE LE TEMPS DE DEBUG
+    // ************************************************
+    // public static String intToStr(int[] iPrint)
+    // {
+    // String str = new String();
+    // for (int i = 0; i < iPrint.length; i++)
+    // {
+    // if ((i % 8) == 0)
+    // {
+    // str += " ";
+    // }
+    // str += iPrint[i];
+    // }
+    // return str;
+    // }
 
     public static void retireHamming(Trame trame)
     {
@@ -156,7 +172,7 @@ public class Hamming
         int offset = 0;
         int position = 0;
 
-        for (int i = 0; i < (iSans.length - 6); i++)
+        for (int i = 0; i < (iSans.length); i++)
         {
             // Si c'est une puissance de 2.
             if ((i + 1) == Math.pow(2, offset))
@@ -238,8 +254,9 @@ public class Hamming
      */
     public static int[] octToInt(Octet[] octDataAvant)
     {
+        // Temporaire.
+        Trame t = new Trame(octDataAvant);
         int[] iSans = new int[48];
-
         for (int i = 0; i < iSans.length; i++)
         {
             iSans[i] = (octDataAvant[i / 8].getValue() >> (7 - i % 8)) & 1;
