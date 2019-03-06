@@ -29,7 +29,6 @@ public class Configurations {
     private static final String TAMPON_C = "TAMPON_C";
     private static final String TAMPON_LLC = "TAMPON_LLC";
     private static final String DELAI = "DELAI";
-    private static final String PATHS = "PATHS";
     private static final String HAMMING = "HAMMING";
     private static final String ERREURS = "ERREURS";
 
@@ -68,9 +67,6 @@ public class Configurations {
                     break;
                 case "[" + DELAI + "]":
                     getThisConfig(br, DELAI);
-                    break;
-                case "[" + PATHS + "]":
-                    getThisConfig(br, PATHS);
                     break;
                 case "[" + HAMMING + "]":
                     getThisConfig(br, HAMMING);

@@ -22,7 +22,18 @@ import java.util.HashMap;
  */
 public class TP1Main {
     public static void main(String[] args) {
-        String pathConfig = "FichiersTxt/Config.txt";
+        if(args.length != 3) {
+            System.err.println("Mauvais nombre de paramètres.");
+            System.err.println("Premier paramètre: Location du fichier de congiguration");
+            System.err.println("Deuxième paramètre: Location du fichier de lecture");
+            System.err.println("Troisième paramètre: Location du fichier d'écriture");
+            System.err.println("Exemple: java main.TP1Main <config> <lecture> <écriture>");
+            return;
+        }
+        
+        String pathConfig = args[0];
+        String pathLecture = args[1];
+        String pathEcriture = args[2];
 
         HashMap<String, String> config = Configurations.getConfigs(pathConfig);
 
@@ -30,8 +41,6 @@ public class TP1Main {
         int tailleTamponC = Integer.parseInt(config.get("TailleTamponC"));
         int taileTamponLLC = Integer.parseInt(config.get("TailleTamponLLC"));
         boolean hamming = Integer.parseInt(config.get("Hamming")) == 1;
-        String pathLecture = config.get("PathLecture");
-        String pathEcriture = config.get("PathEcriture");
         int freqErreurs = Integer.parseInt(config.get("freqErreurs"));
 
         Transmission transmission = new Transmission(tailleTamponC, "Support de transmission", freqErreurs);
