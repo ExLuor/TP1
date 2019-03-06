@@ -249,7 +249,7 @@ public class TamponLLC
     {
         for (int i = 0; i < tampon.length; i++)
         {
-            if (!tampon[i].valid)
+            if (tampon[i].trame != null && !tampon[i].valid)
             {
                 tampon[i].valid = true;
                 return tampon[i].trame;
