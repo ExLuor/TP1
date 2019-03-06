@@ -53,8 +53,9 @@ public class Transmission implements Runnable {
             Trame trame = tampon.poll();
             if (trame == null)
                 continue;
-            addErrors(trame);
-            sendTrame(trame);
+            int numDest = trame.getDestHamming();
+            addError(trame);
+            sendTrame(trame, numDest);
         }
     }
 
@@ -67,40 +68,35 @@ public class Transmission implements Runnable {
         return false;
     }
 
-    private void addErrors(Trame trame) {
+    private void addError(Trame trame) {
         if(freqErreur == 0)
             return;
         Random rnd = new Random();
         int luckyNumber = rnd.nextInt(freqErreur);
         if (luckyNumber == 0) {
-            modifierBits(trame);
+            modifierBit(trame);
             System.out.println("Ajout d'erreurs dans la trame " + Byte.toUnsignedInt(trame.getNumTrameHamming())
                     + " en modifiant certain bits.");
         }
     }
 
-    private void modifierBits(Trame trame) {
+    private void modifierBit(Trame trame) {
         Random rnd = new Random();
-        int maxErreurs = trame.getData().length / 2; // On ne veut pas trop en mettre quand même
         Octet[] octData = trame.getData(); // Les données de cette trame.
-        int nbErreurs = rnd.nextInt(maxErreurs) + 1;
 
-        for (int i = 0; i < nbErreurs; i++) {
-            // Sélection un octet au hasard.
-            int posByte = rnd.nextInt(octData.length);
-            // Position du bit à modifier.
-            int posBit = rnd.nextInt(8);
-            // Valeur du bit.
-            int bit = octData[posByte].getBit(posBit);
-            // On alterne la valeur du bit
-            octData[posByte].changeBit(posBit, !(bit == 1));
-        }
+        // Sélection un octet au hasard.
+        int posByte = rnd.nextInt(octData.length);
+        // Position du bit à modifier.
+        int posBit = rnd.nextInt(8);
+        // Valeur du bit.
+        int bit = octData[posByte].getBit(posBit);
+        // On alterne la valeur du bit
+        octData[posByte].changeBit(posBit, !(bit == 1));
 
         trame.setData(octData);
     }
 
-    private synchronized void sendTrame(Trame trame) {
-        int numDest = trame.getDestHamming();
+    private synchronized void sendTrame(Trame trame, int numDest) {
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
         if (dest == null) {
             return;
