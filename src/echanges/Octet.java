@@ -31,6 +31,10 @@ public class Octet
     {
         value = octet;
     }
+    
+    public Octet clone() {
+        return new Octet(value);
+    }
 
     public byte getValue()
     {

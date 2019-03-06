@@ -65,17 +65,17 @@ public class TestHamming
     private void byteSansHamming()
     {
         // Adresse de destination.
-        b0SansHam = (byte) 2;
+        b0SansHam = (byte) 0b00000010;
         // Adresse source.
-        b1SansHam = (byte) 1;
+        b1SansHam = (byte) 0b00000001;
         // Type de la trame (Data).
-        b2SansHam = (byte) 90;
+        b2SansHam = (byte) 0b01011010;
         // Numéro de la trame.
-        b3SansHam = (byte) 59;
+        b3SansHam = (byte) 0b00000000;
         // Données.
-        b4SansHam = (byte) 48;
+        b4SansHam = (byte) 0b00110001;
         // Remplissage.
-        b5SansHam = (byte) 0;
+        b5SansHam = (byte) 0b00000000;
     }
 
     private void byteAvecHamming()

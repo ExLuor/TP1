@@ -47,9 +47,10 @@ public class TamponCirculaire
     {
         if (!isFull())
         {
+            Trame copy = new Trame(trame);
             nbElems++;
             rear = (rear + 1) % tampon.length;
-            tampon[rear].trame = trame;
+            tampon[rear].trame = copy;
             tampon[rear].timeAdded = System.currentTimeMillis();
             return true;
         }
