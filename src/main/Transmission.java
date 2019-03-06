@@ -112,7 +112,6 @@ public class Transmission implements Runnable
     }
 
     private synchronized void sendTrame(Trame trame, int numDest) {
-        int numDest = trame.getDestHamming();
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
         if (dest == null)
         {
