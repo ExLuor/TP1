@@ -110,16 +110,6 @@ public class Trame {
     /*
      * GET/SET DU TYPE DE LA TRAME.
      */
-    public Type getTypeHamming()
-    {
-        Hamming ham = new Hamming();
-        // Crée un clone de la trame avec Hamming.
-        Trame tAvecHamming = new Trame(this);
-        // Retirer Hamming du clone.
-        Trame tSansHamming = ham.retireHamming(tAvecHamming);
-        return tSansHamming.getType();
-    }
-
 
     public Type getType()
     {
