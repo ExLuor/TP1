@@ -16,9 +16,7 @@ package main;
 import echanges.Trame;
 
 /**
- * 
  * Tampon circulaire utilisé par le support de transmission
- *
  */
 public class TamponCirculaire
 {

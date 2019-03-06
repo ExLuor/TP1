@@ -74,24 +74,21 @@ public class Hamming
 
     public Trame corrigerTrame(Trame t)
     {
-        // Précaution si on tente de corriger une trame valide.
         if (valideHamming(t))
         {
             return t;
         }
-        // Tableau d'octets qui contient Hamming et l'erreur.
+        // Objets qui contiennent Hamming et l'erreur.
         Octet[] oAvec = t.getData();
-        // Vecteur d'entiers qui contient Hamming et l'erreur.
         int[] iAvec = octToInt(oAvec);
         // Valeurs des sommes de contrôle (incluant celles-ci).
         int[] cBitAvant = calculBitControl(iAvec);
-        // Bits de contrôle tels quels dans la trame.
         int[] cBitActuel = new int[cBitAvant.length];
         for (int i = 0; i < cBitAvant.length; i++)
         {
             // Soustrait la valeur du bit à la somme.
             cBitAvant[i] -= iAvec[((int) Math.pow(2, i)) - 1];
-            // Obtient les bits de contrôle actuels.
+            // Obtient les bits de contrôle tels qu'ils sont dans la trame.
             cBitActuel[i] = iAvec[((int) Math.pow(2, i)) - 1];
         }
         // Syndrome de l'erreur de la trame.
@@ -99,12 +96,10 @@ public class Hamming
 
         for (int i = 0; i < cBitAvant.length; i++)
         {
-            // Si le bit de contrôle doit être de 0.
             if ((cBitAvant[i] % 2) == 0)
             {
                 cBitApres[i] = cBitActuel[i] == 0 ? 0 : 1;
             }
-            // Si le bit de contrôle doit être de 1.
             else
             {
                 cBitApres[i] = cBitActuel[i] == 1 ? 0 : 1;
@@ -112,7 +107,6 @@ public class Hamming
         }
         // Le bit qui doit être inversé.
         int posErr = 0;
-        // Pour tous les bits de contrôle.
         for (int i = 0; i < cBitApres.length; i++)
         {
             posErr += (cBitApres[i] * Math.pow(2, i));

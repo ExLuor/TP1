@@ -55,25 +55,57 @@ public class TestHamming
     @Before
     public void setup()
     {
+        byteSansHamming();
+        byteAvecHamming();
+        octSansHamming();
+        octAvecHamming();
+
+        tSansHamming = new Trame(octDataSansHam);
+        tAvecHamming = new Trame(octDataAvecHam);
+
+        ham = new Hamming();
+    }
+
+    private void byteSansHamming()
+    {
         // Adresse de destination.
         b0SansHam = (byte) 2;
-        b0AvecHam = (byte) 80;
         // Adresse source.
         b1SansHam = (byte) 1;
-        b1AvecHam = (byte) 33;
         // Type de la trame (Data).
         b2SansHam = (byte) 90;
-        b2AvecHam = (byte) 10;
         // Numéro de la trame.
         b3SansHam = (byte) 59;
-        b3AvecHam = (byte) 209;
         // Données.
         b4SansHam = (byte) 48;
-        b4AvecHam = (byte) 236;
         // Remplissage.
         b5SansHam = (byte) 0;
-        b5AvecHam = (byte) 192;
+    }
 
+    private void byteAvecHamming()
+    {
+        // Adresse de destination.
+
+        b0AvecHam = (byte) 80;
+        // Adresse source.
+
+        b1AvecHam = (byte) 33;
+        // Type de la trame (Data).
+
+        b2AvecHam = (byte) 10;
+        // Numéro de la trame.
+
+        b3AvecHam = (byte) 209;
+        // Données.
+
+        b4AvecHam = (byte) 236;
+        // Remplissage.
+
+        b5AvecHam = (byte) 192;
+    }
+
+    private void octSansHamming()
+    {
         octDataSansHam = new Octet[6];
         octDataSansHam[0] = new Octet(b0SansHam);
         octDataSansHam[1] = new Octet(b1SansHam);
@@ -81,7 +113,10 @@ public class TestHamming
         octDataSansHam[3] = new Octet(b3SansHam);
         octDataSansHam[4] = new Octet(b4SansHam);
         octDataSansHam[5] = new Octet(b5SansHam);
+    }
 
+    private void octAvecHamming()
+    {
         octDataAvecHam = new Octet[6];
         octDataAvecHam[0] = new Octet(b0AvecHam);
         octDataAvecHam[1] = new Octet(b1AvecHam);
@@ -89,11 +124,6 @@ public class TestHamming
         octDataAvecHam[3] = new Octet(b3AvecHam);
         octDataAvecHam[4] = new Octet(b4AvecHam);
         octDataAvecHam[5] = new Octet(b5AvecHam);
-
-        tSansHamming = new Trame(octDataSansHam);
-        tAvecHamming = new Trame(octDataAvecHam);
-
-        ham = new Hamming();
     }
 
     @Test

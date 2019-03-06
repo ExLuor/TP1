@@ -51,22 +51,17 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame>
     {
         Hamming ham = new Hamming();
         trame = ham.addHamming(trame);
-        // TODO: Ajouter les infos manquante à la trame avant de l'envoyer à la
-        // couche C
-        // TODO: Ajouter Hamming
     }
 
     private void removeInfosToTrame(Trame trame)
     {
         Hamming ham = new Hamming();
         trame = ham.retireHamming(trame);
-        // TODO: Enlever les infos rajouter à la trame
     }
 
     private boolean verifierTrameValide(Trame trame)
     {
         Hamming ham = new Hamming();
-        // TODO: Vérifier si la trame est valide
         return ham.valideHamming(trame);
     }
 
@@ -74,7 +69,6 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame>
     {
         Hamming ham = new Hamming();
         trame = ham.corrigerTrame(trame);
-        // TODO: Corriger la trame avec Hamming
     }
 
     @Override
