@@ -18,10 +18,8 @@ import echanges.Trame;
 /**
  * Tampon circulaire utilisé par le support de transmission
  */
-public class TamponCirculaire
-{
-    class CirculaireFormat
-    {
+public class TamponCirculaire {
+    class CirculaireFormat {
         Trame trame = null;
         long timeAdded = 0;
     }
@@ -31,11 +29,9 @@ public class TamponCirculaire
     private int rear;
     private int nbElems;
 
-    public TamponCirculaire(int size)
-    {
+    public TamponCirculaire(int size) {
         tampon = new CirculaireFormat[size];
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             tampon[i] = new CirculaireFormat();
         }
         front = 0;
@@ -43,10 +39,8 @@ public class TamponCirculaire
         nbElems = 0;
     }
 
-    public synchronized boolean add(Trame trame)
-    {
-        if (!isFull())
-        {
+    public synchronized boolean add(Trame trame) {
+        if (!isFull()) {
             Trame copy = new Trame(trame);
             nbElems++;
             rear = (rear + 1) % tampon.length;
@@ -57,10 +51,8 @@ public class TamponCirculaire
         return false;
     }
 
-    public synchronized Trame poll()
-    {
-        if (!isEmpty())
-        {
+    public synchronized Trame poll() {
+        if (!isEmpty()) {
             nbElems--;
             front = (front + 1) % tampon.length;
             Trame trame = tampon[front].trame;
@@ -71,22 +63,18 @@ public class TamponCirculaire
         return null;
     }
 
-    public long getLastAddedTime()
-    {
-        if (!isEmpty())
-        {
+    public long getLastAddedTime() {
+        if (!isEmpty()) {
             return tampon[(front + 1) % tampon.length].timeAdded;
         }
         return 0;
     }
 
-    public boolean isFull()
-    {
+    public boolean isFull() {
         return nbElems == tampon.length;
     }
 
-    public synchronized boolean isEmpty()
-    {
+    public synchronized boolean isEmpty() {
         return nbElems == 0;
     }
 }

@@ -18,13 +18,11 @@ package main;
  * Classe qui génère un ID
  *
  */
-public class IdGenerator
-{
+public class IdGenerator {
 
     private static int ID = 1;
 
-    public synchronized static int GetID()
-    {
+    public synchronized static int GetID() {
         return ID++;
     }
 }

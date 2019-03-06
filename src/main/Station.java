@@ -18,16 +18,14 @@ package main;
  * Représente une station qui contient trois couches
  *
  */
-public class Station
-{
+public class Station {
     private SousCoucheFichier coucheFichier;
     private SousCoucheMac coucheMac;
     private SousCoucheLLC coucheLLC;
     private int ID;
 
     public Station(String nomFichierEntrant, String nomFichierSortant, Transmission transmission, String nomStation,
-            int timeout, int buffersize, boolean hamming)
-    {
+            int timeout, int buffersize, boolean hamming) {
         ID = IdGenerator.GetID();
         coucheFichier = new SousCoucheFichier(nomFichierEntrant, nomFichierSortant, nomStation + 1);
         coucheMac = new SousCoucheMac(nomStation + 2, ID);
@@ -40,25 +38,21 @@ public class Station
         transmission.addCoucheReceptrice(ID, coucheLLC);
     }
 
-    public SousCoucheLLC getCoucheReceptrice()
-    {
+    public SousCoucheLLC getCoucheReceptrice() {
         return coucheLLC;
     }
 
-    public void setStationDest(int stationID)
-    {
+    public void setStationDest(int stationID) {
         coucheMac.setStationDest(stationID);
     }
 
-    public void start()
-    {
+    public void start() {
         new Thread(coucheLLC).start();
         new Thread(coucheMac).start();
         new Thread(coucheFichier).start();
     }
 
-    public int getID()
-    {
+    public int getID() {
         return ID;
     }
 }

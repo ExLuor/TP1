@@ -20,10 +20,8 @@ import java.util.HashMap;
  * Classe principale du programme
  *
  */
-public class TP1Main
-{
-    public static void main(String[] args)
-    {
+public class TP1Main {
+    public static void main(String[] args) {
         String pathConfig = "FichiersTxt/Config.txt";
 
         HashMap<String, String> config = Configurations.getConfigs(pathConfig);

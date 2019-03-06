@@ -23,40 +23,33 @@ import java.util.Random;
  * Classe du support de transmission qui connecte A3 à B3
  *
  */
-public class Transmission implements Runnable
-{
+public class Transmission implements Runnable {
     private String nomCouche;
     private TamponCirculaire tampon;
     private final long LATENCY = 500; // en ms
     private HashMap<Integer, SousCouche<?, Trame>> couchesReceptrices;
     private int freqErreur;
 
-    public Transmission(int grandeurBuffer, String nomCouche, int freqErreur)
-    {
+    public Transmission(int grandeurBuffer, String nomCouche, int freqErreur) {
         this.nomCouche = nomCouche;
         tampon = new TamponCirculaire(grandeurBuffer);
         couchesReceptrices = new HashMap<Integer, SousCouche<?, Trame>>();
         this.freqErreur = freqErreur;
     }
 
-    public synchronized void addCoucheReceptrice(int stationID, SousCouche<?, Trame> couche)
-    {
+    public synchronized void addCoucheReceptrice(int stationID, SousCouche<?, Trame> couche) {
         couchesReceptrices.put(stationID, couche);
     }
 
     @Override
-    public void run()
-    {
-        while (true)
-        {
-            if (tampon.isEmpty())
-            {
+    public void run() {
+        while (true) {
+            if (tampon.isEmpty()) {
                 continue;
             }
 
             long timeToWait = LATENCY - (System.currentTimeMillis() - tampon.getLastAddedTime());
-            if (timeToWait > 0)
-            {
+            if (timeToWait > 0) {
                 continue;
             }
             Trame trame = tampon.poll();
@@ -68,10 +61,8 @@ public class Transmission implements Runnable
         }
     }
 
-    public synchronized boolean addTrame(Trame trame)
-    {
-        if (tampon.add(trame))
-        {
+    public synchronized boolean addTrame(Trame trame) {
+        if (tampon.add(trame)) {
             System.out.println("La couche " + nomCouche + " a ajouté la trame "
                     + Byte.toUnsignedInt(trame.getNumTrameHamming()) + " à son tampon.");
             return true;
@@ -79,24 +70,20 @@ public class Transmission implements Runnable
         return false;
     }
 
-    private void addError(Trame trame)
-    {
-        if (freqErreur == 0)
-        {
+    private void addError(Trame trame) {
+        if (freqErreur == 0) {
             return;
         }
         Random rnd = new Random();
         int luckyNumber = rnd.nextInt(freqErreur);
-        if (luckyNumber == 0)
-        {
+        if (luckyNumber == 0) {
             modifierBit(trame);
             System.out.println("Ajout d'une erreur dans la trame " + Byte.toUnsignedInt(trame.getNumTrameHamming())
                     + " en modifiant un bit.");
         }
     }
 
-    private void modifierBit(Trame trame)
-    {
+    private void modifierBit(Trame trame) {
         Random rnd = new Random();
 
         Octet[] octData = trame.getData(); // Les données de cette trame.
@@ -113,11 +100,9 @@ public class Transmission implements Runnable
         trame.setData(octData);
     }
 
-    private synchronized void sendTrame(Trame trame, int numDest)
-    {
+    private synchronized void sendTrame(Trame trame, int numDest) {
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
-        if (dest == null)
-        {
+        if (dest == null) {
             return;
         }
         dest.addFromDown(trame);
