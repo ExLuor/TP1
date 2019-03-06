@@ -54,12 +54,28 @@ public class TamponLLC
             if (otherTrame == null)
                 return -1;
 
-            int thisNum = this.valid ? thisTrame.getNumTrame() : thisTrame.getNumTrameHamming();
-            int otherNum = format.valid ? otherTrame.getNumTrame() : otherTrame.getNumTrameHamming();
-
-            if (thisNum == otherNum)
+            byte thisNum = this.valid ? thisTrame.getNumTrame() : thisTrame.getNumTrameHamming();
+            byte otherNum = format.valid ? otherTrame.getNumTrame() : otherTrame.getNumTrameHamming();
+            
+            int thisNumInt = Byte.toUnsignedInt(thisNum);
+            int otherNumInt = Byte.toUnsignedInt(otherNum);
+            
+            int difference = thisNumInt - otherNumInt;
+            
+            if (thisNumInt == otherNumInt)
                 return 0;
-            if (thisNum < otherNum)
+            
+            if(difference < 0) {
+                difference *= -1;
+            }
+            
+            if(difference > 7) {
+                if (thisNumInt < otherNumInt)
+                    return 1;
+                return -1;
+            }
+            
+            if (thisNumInt < otherNumInt)
                 return -1;
             return 1;
         }
