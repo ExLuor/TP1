@@ -81,22 +81,16 @@ public class TestHamming
     private void byteAvecHamming()
     {
         // Adresse de destination.
-
         b0AvecHam = (byte) 80;
         // Adresse source.
-
         b1AvecHam = (byte) 33;
         // Type de la trame (Data).
-
         b2AvecHam = (byte) 10;
         // Numéro de la trame.
-
         b3AvecHam = (byte) 209;
         // Données.
-
         b4AvecHam = (byte) 236;
         // Remplissage.
-
         b5AvecHam = (byte) 192;
     }
 
