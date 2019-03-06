@@ -72,12 +72,10 @@ public class SousCoucheMac extends SousCouche<Octet, Trame>
     protected void sendMessageToUp()
     {
         Trame trame = bufferFromDown.poll();
-
         if (trame == null)
         {
             return;
         }
-
         Octet octet = TrameToOctet(trame);
         sendToUp(octet);
     }

@@ -111,7 +111,6 @@ public class TestTrame
     public void testIdentiqueTrame()
     {
         assertEquals(tSansHamming, tSansHamming);
-        // assertEquals(t1, t1);
     }
 
     @Test
@@ -136,7 +135,6 @@ public class TestTrame
     public void testOctetsDiff()
     {
         Octet[] o2 = new Octet[6];
-        // Octet[] o2 = new Octet[2];
         o2[0] = new Octet(b0SansHam);
         o2[1] = new Octet(b0SansHam);
         o2[2] = new Octet(b2SansHam);
@@ -181,8 +179,6 @@ public class TestTrame
     {
         Octet o2 = tSansHamming.getOctet(0);
         Octet o3 = new Octet(b0SansHam);
-        // Octet o2 = t1.getOctet(0);
-        // Octet o3 = new Octet(b1);
         assertEquals(o2, o3);
     }
 
@@ -253,9 +249,7 @@ public class TestTrame
         t1.setType(tAvecHamming.getTypeHamming());
         Trame.Type type1 = t1.getType();
         Trame.Type type2 = tSansHamming.getType();
-        // boolean = (t1.getType()==tSansHamming.getType());
         assertEquals(type1, type2);
-
     }
 
     @Test
@@ -315,83 +309,3 @@ public class TestTrame
     }
 
 }
-/* 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * */

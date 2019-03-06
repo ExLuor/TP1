@@ -79,21 +79,24 @@ public class Transmission implements Runnable
         return false;
     }
 
-    private void addError(Trame trame) {
+    private void addError(Trame trame)
+    {
         if (freqErreur == 0)
         {
             return;
         }
         Random rnd = new Random();
         int luckyNumber = rnd.nextInt(freqErreur);
-        if (luckyNumber == 0) {
+        if (luckyNumber == 0)
+        {
             modifierBit(trame);
             System.out.println("Ajout d'une erreur dans la trame " + Byte.toUnsignedInt(trame.getNumTrameHamming())
                     + " en modifiant un bit.");
         }
     }
 
-    private void modifierBit(Trame trame) {
+    private void modifierBit(Trame trame)
+    {
         Random rnd = new Random();
         int maxErreurs = trame.getData().length / 2; // On ne veut pas trop en
                                                      // mettre quand même
@@ -111,7 +114,8 @@ public class Transmission implements Runnable
         trame.setData(octData);
     }
 
-    private synchronized void sendTrame(Trame trame, int numDest) {
+    private synchronized void sendTrame(Trame trame, int numDest)
+    {
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
         if (dest == null)
         {
@@ -122,78 +126,3 @@ public class Transmission implements Runnable
                 + Byte.toUnsignedInt(trame.getNumTrameHamming()) + " à la station " + numDest + ".");
     }
 }
-
-/*
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- * */

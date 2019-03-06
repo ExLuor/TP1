@@ -129,9 +129,10 @@ public class TestHamming
         Hamming.retireHamming(tAvecHamming);
         assertEquals(tSansHamming.toString(), tAvecHamming.toString());
     }
-    
+
     @Test
-    public void testEncodeDecode() {
+    public void testEncodeDecode()
+    {
         String before = tSansHamming.toString();
         Hamming.addHamming(tSansHamming);
         Hamming.retireHamming(tSansHamming);
@@ -259,45 +260,3 @@ public class TestHamming
         assertEquals(before, after);
     }
 }
-/* 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * */
