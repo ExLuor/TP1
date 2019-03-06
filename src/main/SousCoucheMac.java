@@ -1,6 +1,6 @@
 /* SousCoucheMac.java
  * Description: Représente la couche A2 (sous-couche MAC de la station émettrice) et la couche B2 (sous-couche MAC de la station réceptrice).
- * Auteurs: Boulanger, Sammy       -
+ * Auteurs: Boulanger, Sammy       - 18 058 904
  *          Durand-Chorel, Michael - 17 141 086
  *          Leroux, Jérémie        - 16 186 994
  * Date de fin: 6 mars 2019

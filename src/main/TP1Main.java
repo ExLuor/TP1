@@ -1,6 +1,6 @@
 /* TP1Main.java
  * Description: Classe principale du programme
- * Auteurs: Boulanger, Sammy       -
+ * Auteurs: Boulanger, Sammy       - 18 058 904
  *          Durand-Chorel, Michael - 17 141 086
  *          Leroux, Jérémie        - 16 186 994
  * Date de fin: 6 mars 2019
