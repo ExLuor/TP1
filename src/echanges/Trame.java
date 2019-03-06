@@ -1,11 +1,8 @@
-/* Trame.java
- * Description: L'objet échangé entre les couches (2 et 3) et (3 ete C).
- * Auteurs: Boulanger, Sammy       - 18 058 904
- *          Durand-Chorel, Michael - 17 141 086
- *          Leroux, Jérémie        - 16 186 994
- * Date de fin: 6 mars 2019
- * Entrées du programme : -
- * Sotrties du programme : -
+/*
+ * Trame.java Description: L'objet échangé entre les couches (2 et 3) et (3 ete
+ * C). Auteurs: Boulanger, Sammy - 18 058 904 Durand-Chorel, Michael - 17 141
+ * 086 Leroux, Jérémie - 16 186 994 Date de fin: 6 mars 2019 Entrées du
+ * programme : - Sotrties du programme : -
  *
  */
 
@@ -59,7 +56,8 @@ public class Trame
         return this.octData;
     }
 
-    public void setData(Octet[] octets) {
+    public void setData(Octet[] octets)
+    {
         this.octData = octets;
     }
 
@@ -73,9 +71,11 @@ public class Trame
      */
     public int getDestHamming()
     {
-        // Crée un clone.
+        Hamming ham = new Hamming();
+        // Crée un clone de la trame avec Hamming.
         Trame tAvecHamming = new Trame(this);
-        Trame tSansHamming = retireHamming(tAvecHamming);
+        // Retire Hamming du clone.
+        Trame tSansHamming = ham.retireHamming(tAvecHamming);
         // Le temps que Hamming soit mis en place.
         if (tSansHamming == null)
         {
@@ -91,13 +91,15 @@ public class Trame
     }
 
     /**
-     *  GET/SET DU BYTE DE L'EXPÉDITEUR.
+     * GET/SET DU BYTE DE L'EXPÉDITEUR.
      */
     public int getSenderHamming()
     {
-        // Crée un clone.
+        Hamming ham = new Hamming();
+        // Crée un clone de la trame avec Hamming.
         Trame tAvecHamming = new Trame(this);
-        Trame tSansHamming = retireHamming(tAvecHamming);
+        // Retire Hamming du clone.
+        Trame tSansHamming = ham.retireHamming(tAvecHamming);
         // Le temps que Hamming soit mis en place.
         if (tSansHamming == null)
         {
@@ -170,9 +172,11 @@ public class Trame
 
     public byte getNumTrameHamming()
     {
-        // Crée un clone.
+        Hamming ham = new Hamming();
+        // Crée un clone de la trame avec Hamming.
         Trame tAvecHamming = new Trame(this);
-        Trame tSansHamming = retireHamming(tAvecHamming);
+        // Retire Hamming du clone.
+        Trame tSansHamming = ham.retireHamming(tAvecHamming);
         // Le temps que Hamming soit mis en place.
         if (tSansHamming == null)
         {
@@ -228,17 +232,8 @@ public class Trame
         }
         return s;
     }
-
-    public static Trame ajouteHamming(Trame trame)
-    {
-        return null;
-    }
-
-    public static Trame retireHamming(Trame trame)
-    {
-        return null;
-    }
 }
+
 /*
  *
  *

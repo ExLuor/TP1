@@ -111,20 +111,6 @@ public class Hamming
         return tFinal;
     }
 
-    private String printInt(int[] iTest)
-    {
-        String str = new String();
-        for (int i = 0; i < iTest.length; i++)
-        {
-            if ((i % 8) == 0 && i > 0)
-            {
-                str += " ";
-            }
-            str += Integer.toString(iTest[i]);
-        }
-        return str;
-    }
-
     /*
      * Prend les caractères de la trame originale et les espaces pour permettre
      * d'y insérer les bits de contrôle.
@@ -251,38 +237,6 @@ public class Hamming
             iSans[i] = (octDataAvant[i / 8].getValue() >> (7 - i % 8)) & 1;
         }
         return iSans;
-    }
-
-    // Le temps de debug.
-    private void printHam(String debut, int[] iAvec, int[] iSans)
-    {
-        String str = new String();
-        str = debut + "\n";
-        str += "\tiSans\t";
-
-        for (int i = 0; i < iSans.length; i++)
-        {
-            if ((i % 8) == 0 && i > 0)
-            {
-                str += " ";
-            }
-            str += Integer.toString(iSans[i]);
-        }
-        str += "\n";
-
-        str += "\tiAvec\t";
-        for (int i = 0; i < iAvec.length; i++)
-        {
-            if ((i % 8) == 0 && i > 0)
-            {
-                str += " ";
-            }
-            str += Integer.toString(iAvec[i]);
-        }
-
-        str += "\n";
-
-        System.out.println(str);
     }
 
 }
