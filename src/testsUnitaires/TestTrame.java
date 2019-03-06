@@ -1,3 +1,16 @@
+// TestTrame.java
+// Description: Contient les tests unitaires pour la classe Trame.java.
+
+// Auteurs:
+// Boulanger, Sammy - 18 058 904
+// Durand-Chorel, Michael - 17 141 086
+// Leroux, Jérémie - 16 186 994
+
+// Date de fin: 6 mars 2019
+// Cours : IFT585
+// Entrées du programme : -
+// Sorties du programme : -
+
 package testsUnitaires;
 
 import static org.junit.Assert.assertEquals;
@@ -74,7 +87,7 @@ public class TestTrame
     @Test
     public void testToString()
     {
-        String str1 = "0101010100001010";
+        String str1 = "01010101 00001010 ";
         String str2 = t1.toString();
         assertEquals(str1, str2);
     }
@@ -90,12 +103,12 @@ public class TestTrame
     public void testGetData()
     {
         Octet[] o2 = t1.getData();
-        for (int i = 0 ; i<o1.length;i++)
+        for (int i = 0; i < o1.length; i++)
         {
             assertEquals(o1[i], o2[i]);
-        }        
+        }
     }
-    
+
     @Test
     public void testGetOctet()
     {

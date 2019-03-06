@@ -1,25 +1,27 @@
-/* TamponCirculaire.java
- * Description: Tampon circulaire utilisé par le support de transmission
- * Auteurs: Boulanger, Sammy       - 18 058 904
- *          Durand-Chorel, Michael - 17 141 086
- *          Leroux, Jérémie        - 16 186 994
- * Date de fin: 6 mars 2019
- * Entrées du programme : -
- * Sotrties du programme : -
- * 
- */
+// TamponCirculaire.java
+// Description: Tampon circulaire utilisé par le support de transmission
+
+// Auteurs:
+// Boulanger, Sammy - 18 058 904
+// Durand-Chorel, Michael - 17 141 086
+// Leroux, Jérémie - 16 186 994
+
+// Date de fin: 6 mars 2019
+// Cours : IFT585
+// Entrées du programme : -
+// Sorties du programme : -
 
 package main;
 
 import echanges.Trame;
 
 /**
- * 
  * Tampon circulaire utilisé par le support de transmission
- *
  */
-public class TamponCirculaire {
-    class CirculaireFormat {
+public class TamponCirculaire
+{
+    class CirculaireFormat
+    {
         Trame trame = null;
         long timeAdded = 0;
     }
@@ -29,9 +31,11 @@ public class TamponCirculaire {
     private int rear;
     private int nbElems;
 
-    public TamponCirculaire(int size) {
+    public TamponCirculaire(int size)
+    {
         tampon = new CirculaireFormat[size];
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++)
+        {
             tampon[i] = new CirculaireFormat();
         }
         front = 0;
@@ -39,8 +43,10 @@ public class TamponCirculaire {
         nbElems = 0;
     }
 
-    public synchronized boolean add(Trame trame) {
-        if (!isFull()) {
+    public synchronized boolean add(Trame trame)
+    {
+        if (!isFull())
+        {
             nbElems++;
             rear = (rear + 1) % tampon.length;
             tampon[rear].trame = trame;
@@ -50,8 +56,10 @@ public class TamponCirculaire {
         return false;
     }
 
-    public synchronized Trame poll() {
-        if (!isEmpty()) {
+    public synchronized Trame poll()
+    {
+        if (!isEmpty())
+        {
             nbElems--;
             front = (front + 1) % tampon.length;
             Trame trame = tampon[front].trame;
@@ -62,18 +70,22 @@ public class TamponCirculaire {
         return null;
     }
 
-    public long getLastAddedTime() {
-        if (!isEmpty()) {
+    public long getLastAddedTime()
+    {
+        if (!isEmpty())
+        {
             return tampon[(front + 1) % tampon.length].timeAdded;
         }
         return 0;
     }
 
-    public boolean isFull() {
+    public boolean isFull()
+    {
         return nbElems == tampon.length;
     }
 
-    public synchronized boolean isEmpty() {
+    public synchronized boolean isEmpty()
+    {
         return nbElems == 0;
     }
 }
