@@ -88,6 +88,11 @@ public class Trame
         }
         return Byte.toUnsignedInt(tSansHamming.octData[0].getValue());
     }
+    
+    public int getDest()
+    {
+        return Byte.toUnsignedInt(octData[0].getValue());
+    }
 
     public void setDest(int dest)
     {
@@ -113,6 +118,10 @@ public class Trame
         return Byte.toUnsignedInt(tSansHamming.octData[1].getValue());
     }
 
+    public int getSender()
+    {
+        return Byte.toUnsignedInt(octData[1].getValue());
+    }
     public void setSender(int senderID)
     {
         byte sender = (byte) senderID;
@@ -122,6 +131,17 @@ public class Trame
     /*
      * GET/SET DU TYPE DE LA TRAME.
      */
+    public Type getTypeHamming()
+    {
+        Hamming ham = new Hamming();
+        // Crée un clone de la trame avec Hamming.
+        Trame tAvecHamming = new Trame(this);
+        // Retirer Hamming du clone.
+        Trame tSansHamming = ham.retireHamming(tAvecHamming);
+        return tSansHamming.getType();
+    }
+    
+    
     public Type getType()
     {
         if (octData[2].getValue() == (byte) 0b01011010)
