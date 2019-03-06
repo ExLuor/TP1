@@ -1,13 +1,15 @@
-/* TP1Main.java
- * Description: Classe principale du programme
- * Auteurs: Boulanger, Sammy       - 18 058 904
- *          Durand-Chorel, Michael - 17 141 086
- *          Leroux, Jérémie        - 16 186 994
- * Date de fin: 6 mars 2019
- * Entrées du programme : -
- * Sotrties du programme : -
- * 
- */
+// TP1Main.java
+// Description: Classe principale du programme
+
+// Auteurs:
+// Boulanger, Sammy - 18 058 904
+// Durand-Chorel, Michael - 17 141 086
+// Leroux, Jérémie - 16 186 994
+
+// Date de fin: 6 mars 2019
+// Cours : IFT585
+// Entrées du programme : -
+// Sorties du programme : -
 
 package main;
 
@@ -18,8 +20,10 @@ import java.util.HashMap;
  * Classe principale du programme
  *
  */
-public class TP1Main {
-    public static void main(String[] args) {
+public class TP1Main
+{
+    public static void main(String[] args)
+    {
         String pathConfig = "FichiersTxt/Config.txt";
 
         HashMap<String, String> config = Configurations.getConfigs(pathConfig);

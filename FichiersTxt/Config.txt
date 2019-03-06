@@ -1,3 +1,7 @@
+Paramètres
+Format :
+NomParamètre	\t	ValeurParamètre
+
 Taille du tampon "T-C" du "Thread C" en trames.
 [TAMPON_C]
 TailleTamponC	16
@@ -31,7 +35,7 @@ Choix de fréquence des erreurs (1/FreqErreur) 0 = aucune
 freqErreurs	50
 [/ERREURS]
 
-4 paramètre (c'est plus que 4 ça..)
+4 paramètre 
 1. La taille du tampon T-C du Thread C
 2. La taille du tampon T-LLC utilisé de chaque côté du Thread C simulant le support de transmission (Protocole6).
 3. Le délais de temporisation (time-out).

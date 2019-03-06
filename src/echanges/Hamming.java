@@ -1,3 +1,18 @@
+// Hamming.java
+// Description: Classe en charge d'ajouter les bits de contrôle de Hamming, de
+// les retirer, de valider une trame selon ses bits de contrôle ou de la
+// corriger.
+
+// Auteurs:
+// Boulanger, Sammy - 18 058 904
+// Durand-Chorel, Michael - 17 141 086
+// Leroux, Jérémie - 16 186 994
+
+// Date de fin: 6 mars 2019
+// Cours : IFT585
+// Entrées du programme : -
+// Sorties du programme : -
+
 package echanges;
 
 public class Hamming

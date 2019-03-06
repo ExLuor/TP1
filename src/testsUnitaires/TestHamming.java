@@ -1,3 +1,16 @@
+// TestHamming.java
+// Description: Contient les tests unitaires pour la classe Hamming.java.
+
+// Auteurs:
+// Boulanger, Sammy - 18 058 904
+// Durand-Chorel, Michael - 17 141 086
+// Leroux, Jérémie - 16 186 994
+
+// Date de fin: 6 mars 2019
+// Cours : IFT585
+// Entrées du programme : -
+// Sorties du programme : -
+
 package testsUnitaires;
 
 import static org.junit.Assert.assertEquals;

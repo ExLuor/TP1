@@ -1,10 +1,15 @@
-/*
- * Transmission.java Description: Classe du support de transmission qui connecte
- * A3 à B3 Auteurs: Boulanger, Sammy - 18 058 904 Durand-Chorel, Michael - 17
- * 141 086 Leroux, Jérémie - 16 186 994 Date de fin: 6 mars 2019 Entrées du
- * programme : - Sotrties du programme : -
- *
- */
+// Transmission.java
+// Description: Classe du support de transmission qui connecte A3 à B3
+
+// Auteurs:
+// Boulanger, Sammy - 18 058 904
+// Durand-Chorel, Michael - 17 141 086
+// Leroux, Jérémie - 16 186 994
+
+// Date de fin: 6 mars 2019
+// Cours : IFT585
+// Entrées du programme : -
+// Sorties du programme : -
 
 package main;
 

@@ -1,11 +1,16 @@
-/*
- * SousCoucheLLC.java Description: Représente la couche A3 (sous-couche LLC de
- * la station émettrice) et la couche B3 (sous-couche LLC de la station
- * réceptrice). Auteurs: Boulanger, Sammy - 18 058 904 Durand-Chorel, Michael -
- * 17 141 086 Leroux, Jérémie - 16 186 994 Date de fin: 6 mars 2019 Entrées du
- * programme : - Sotrties du programme : -
- * 
- */
+// SousCoucheLLC.java
+// Description: Représente la couche A3 (sous-couche LLC de la station
+// émettrice) et la couche B3 (sous-couche LLC de la station réceptrice).
+
+// Auteurs:
+// Boulanger, Sammy - 18 058 904
+// Durand-Chorel, Michael - 17 141 086
+// Leroux, Jérémie - 16 186 994
+
+// Date de fin: 6 mars 2019
+// Cours : IFT585
+// Entrées du programme : -
+// Sorties du programme : -
 
 package main;
 
@@ -91,7 +96,11 @@ public class SousCoucheLLC extends SousCouche<Trame, Trame>
         {
             if (corrigerHamming)
             {
+                System.out.println(
+                        "La station " + nomCouche + " a reçu une trame endommagée et la corrige " + trame.toString());
                 corrigerTrame(trame);
+                System.out.println(
+                        "La station " + nomCouche + " a recu une trame endommagée et l'a corrigee " + trame.toString());
             }
             else
             {
