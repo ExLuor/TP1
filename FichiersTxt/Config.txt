@@ -26,14 +26,9 @@ Hamming	0
 [/HAMMING]
 
 
-Choix de perturbations (0 = Aucune; 1 = Type1; 2 = Type2; etc.) et leur probabilité.
-ErrType0 : Probabilité qu'une trame subisse l'altération d'un bit.
-ErrType1 : Probabilité de perdre complètement une trame.
-ErrType2 : Probabilité d'interchanger l'ordre de deux trames.
+Choix de fréquence des erreurs (1/FreqErreur) 0 = aucune
 [ERREURS]
-ErrType0	1
-ErrType1	0
-ErrType2	0
+freqErreurs	50
 [/ERREURS]
 
 4 paramètre (c'est plus que 4 ça..)

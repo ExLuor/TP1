@@ -1,232 +1,187 @@
-package main;
+/* Transmission.java
+ * Description: Classe du support de transmission qui connecte A3 à B3
+ * Auteurs: Boulanger, Sammy       - 18 058 904
+ *          Durand-Chorel, Michael - 17 141 086
+ *          Leroux, Jérémie        - 16 186 994
+ * Date de fin: 6 mars 2019
+ * Entrées du programme : -
+ * Sotrties du programme : -
+ *
+ */
 
-import java.util.HashMap;
-import java.util.Random;
+package main;
 
 import echanges.Octet;
 import echanges.Trame;
+import java.util.HashMap;
+import java.util.Random;
 
-public class Transmission implements Runnable
-{
+/**
+ *
+ * Classe du support de transmission qui connecte A3 à B3
+ *
+ */
+public class Transmission implements Runnable {
     private String nomCouche;
     private TamponCirculaire tampon;
     private final long LATENCY = 500; // en ms
     private HashMap<Integer, SousCouche<?, Trame>> couchesReceptrices;
-    private HashMap<String, String> configs;
+    private int freqErreur;
 
-    public Transmission(int grandeurBuffer, String nomCouche)
-    {
+    public Transmission(int grandeurBuffer, String nomCouche, int freqErreur) {
         this.nomCouche = nomCouche;
         tampon = new TamponCirculaire(grandeurBuffer);
         couchesReceptrices = new HashMap<Integer, SousCouche<?, Trame>>();
-        configs = new HashMap<String, String>();
+        this.freqErreur = freqErreur;
     }
 
-    public synchronized void addCoucheReceptrice(int stationID, SousCouche<?, Trame> couche)
-    {
+    public synchronized void addCoucheReceptrice(int stationID, SousCouche<?, Trame> couche) {
         couchesReceptrices.put(stationID, couche);
     }
 
     @Override
-    public void run()
-    {
-        while (true)
-        {
-            if (tampon.isEmpty())
-            {
+    public void run() {
+        while (true) {
+            if (tampon.isEmpty()) {
                 continue;
             }
 
             long timeToWait = LATENCY - (System.currentTimeMillis() - tampon.getLastAddedTime());
-            if (timeToWait > 0)
-            {
+            if (timeToWait > 0) {
                 continue;
             }
-            Trame t = tampon.poll();
-            if (t == null)
+            Trame trame = tampon.poll();
+            if (trame == null)
                 continue;
-            addErrors(t);
-            sendTrame(t);
+            addErrors(trame);
+            sendTrame(trame);
         }
     }
 
-    public void setConfigs(HashMap<String, String> conf)
-    {
-        this.configs = conf;
-    }
-
-    public synchronized boolean addTrame(Trame trame)
-    {
-        if (tampon.add(trame))
-        {
-            System.out.println(
-                    "La couche " + nomCouche + " a ajouté la trame " + trame.getNumTrameHamming() + " à son tampon.");
+    public synchronized boolean addTrame(Trame trame) {
+        if (tampon.add(trame)) {
+            System.out.println("La couche " + nomCouche + " a ajouté la trame "
+                    + Byte.toUnsignedInt(trame.getNumTrameHamming()) + " à son tampon.");
             return true;
         }
         return false;
     }
 
-    private void addErrors(Trame t)
-    {
+    private void addErrors(Trame trame) {
+        if(freqErreur == 0)
+            return;
         Random rnd = new Random();
-        int e1 = (int) (Double.parseDouble(configs.get("ErrType0")) * 100);
-        int e2 = (int) (Double.parseDouble(configs.get("ErrType1")) * 100);
-        int e3 = (int) (Double.parseDouble(configs.get("ErrType2")) * 100);
-        int seuil = rnd.nextInt(100);
-        if (e1 >= seuil)
-        {
-            applyErrType0(t);
+        int luckyNumber = rnd.nextInt(freqErreur);
+        if (luckyNumber == 0) {
+            modifierBits(trame);
+            System.out.println("Ajout d'erreurs dans la trame " + Byte.toUnsignedInt(trame.getNumTrameHamming())
+                    + " en modifiant certain bits.");
         }
-        if (e2 >= seuil)
-        {
-            applyErrType1(t);
-        }
-        if (e3 >= seuil)
-        {
-            applyErrType2(t);
-        }
-
     }
 
-    private void applyErrType0(Trame t)
-    {
-        String tIni = t.toString();
+    private void modifierBits(Trame trame) {
         Random rnd = new Random();
-        // Les données de cette trame.
-        Octet[] octData = t.getData();
-        // Sélection un octet au hasard.
-        int posByte = rnd.nextInt(octData.length);
+        int maxErreurs = trame.getData().length / 2; // On ne veut pas trop en mettre quand même
+        Octet[] octData = trame.getData(); // Les données de cette trame.
+        int nbErreurs = rnd.nextInt(maxErreurs) + 1;
 
-        // Position du bit à modifier.
-        int posBit = (rnd.nextInt(8));
-        // Valeur du bit.
-        int bit1 = octData[posByte].getBit(posBit);
-        int bit2 = -1;
-        // Le bit était à 1.
-        if (bit1 == 1)
-        {
-            // Le bit sera maintenant 0.
-            octData[posByte].changeBit(posBit, false);
-            bit2 = 0;
+        for (int i = 0; i < nbErreurs; i++) {
+            // Sélection un octet au hasard.
+            int posByte = rnd.nextInt(octData.length);
+            // Position du bit à modifier.
+            int posBit = rnd.nextInt(8);
+            // Valeur du bit.
+            int bit = octData[posByte].getBit(posBit);
+            // On alterne la valeur du bit
+            octData[posByte].changeBit(posBit, !(bit == 1));
         }
-        // Le bit était à 0.
-        else
-        {
-            // Le bit sera maintenant 1.
-            octData[posByte].changeBit(posBit, true);
-            bit2 = 1;
-        }
-        t = new Trame(octData);
-//        printErr(t, bit1, bit2, posByte, posBit, tIni);
+
+        trame.setData(octData);
     }
 
-    private void applyErrType1(Trame t)
-    {
-        // TODO : Si on ajoute la perte complète de la trame.
-    }
-
-    private void applyErrType2(Trame t)
-    {
-        // TODO : Si on ajoute l'interchange de deux trames.
-    }
-
-    // Temporaire pour les erreurs.
-    private void printErr(Trame t, int bit1, int bit2, int posByte, int posBit, String tIni)
-    {
-        String str = new String();
-        str = "********************** Application de l'errType0\n";
-        str += "\tTrame initiale = " + tIni + "\n";
-        str += "\tTrame finale   = " + t.toString() + "\n";
-        str += "\tByte = " + posByte + "\t de valeur finale = " + t.getData()[posByte] + "\n";
-        str += "\tBit = " + posBit + "\tInitial = " + bit1 + "\tFinale = " + bit2 + "\n";
-        System.out.println(str);
-    }
-
-    private synchronized void sendTrame(Trame t)
-    {
-        int numDest = t.getDestHamming();
+    private synchronized void sendTrame(Trame trame) {
+        int numDest = trame.getDestHamming();
         SousCouche<?, Trame> dest = couchesReceptrices.get(numDest);
-        if (dest == null)
-        {
+        if (dest == null) {
             return;
         }
-        dest.addFromDown(t);
-        System.out.println("La couche " + nomCouche + " a envoyé la trame " + t.getNumTrameHamming() + " à la station "
-                + numDest + ".");
+        dest.addFromDown(trame);
+        System.out.println("La couche " + nomCouche + " a envoyé la trame "
+                + Byte.toUnsignedInt(trame.getNumTrameHamming()) + " à la station " + numDest + ".");
     }
 }
 
-/* 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+/*
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  * */

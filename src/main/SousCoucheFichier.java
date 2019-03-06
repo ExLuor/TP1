@@ -1,3 +1,14 @@
+/* SousCoucheFichier.java
+ * Description: Représente la couche A1 (lecture du fichier) et la couche B1 (écriture du fichier).
+ * Auteurs: Boulanger, Sammy       - 18 058 904
+ *          Durand-Chorel, Michael - 17 141 086
+ *          Leroux, Jérémie        - 16 186 994
+ * Date de fin: 6 mars 2019
+ * Entrées du programme : -
+ * Sotrties du programme : -
+ * 
+ */
+
 package main;
 
 import java.io.File;
@@ -61,11 +72,11 @@ public class SousCoucheFichier extends SousCouche<Octet, Octet> {
 
     @Override
     protected void sendMessageToDown() {
-        Octet o = bufferFromUp.peek();
-        if (o == null)
+        Octet octet = bufferFromUp.peek();
+        if (octet == null)
             return;
 
-        if (sendToDown(o)) {
+        if (sendToDown(octet)) {
             bufferFromUp.poll();
         }
     }

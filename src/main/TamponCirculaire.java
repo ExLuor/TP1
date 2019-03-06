@@ -1,7 +1,23 @@
+/* TamponCirculaire.java
+ * Description: Tampon circulaire utilisé par le support de transmission
+ * Auteurs: Boulanger, Sammy       - 18 058 904
+ *          Durand-Chorel, Michael - 17 141 086
+ *          Leroux, Jérémie        - 16 186 994
+ * Date de fin: 6 mars 2019
+ * Entrées du programme : -
+ * Sotrties du programme : -
+ * 
+ */
+
 package main;
 
 import echanges.Trame;
 
+/**
+ * 
+ * Tampon circulaire utilisé par le support de transmission
+ *
+ */
 public class TamponCirculaire {
     class CirculaireFormat {
         Trame trame = null;
@@ -23,11 +39,11 @@ public class TamponCirculaire {
         nbElems = 0;
     }
 
-    public synchronized boolean add(Trame value) {
+    public synchronized boolean add(Trame trame) {
         if (!isFull()) {
             nbElems++;
             rear = (rear + 1) % tampon.length;
-            tampon[rear].trame = value;
+            tampon[rear].trame = trame;
             tampon[rear].timeAdded = System.currentTimeMillis();
             return true;
         }
@@ -38,10 +54,10 @@ public class TamponCirculaire {
         if (!isEmpty()) {
             nbElems--;
             front = (front + 1) % tampon.length;
-            Trame t = tampon[front].trame;
+            Trame trame = tampon[front].trame;
             tampon[front].trame = null;
             tampon[front].timeAdded = 0;
-            return t;
+            return trame;
         }
         return null;
     }
